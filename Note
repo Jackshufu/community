@@ -1,0 +1,66 @@
+##访问https://v3.bootcss.com/css/ 下载BootStrap
+##解压，并将其中的css,fonts,js文件夹复制到项目的/resources/static文件夹下
+##resources文件夹下新建一个templates文件夹
+##在thymeleaf官网下载一个index.html的使用模板，放在templates文件夹下；网址https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html
+第一步：
+<!DOCTYPE html>
+
+  <html xmlns:th="http://www.thymeleaf.org">
+
+  <head>
+      <title>亮亮社区</title>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <!--三个资源文件的引入-->
+      <link rel="stylesheet" href="css/bootstrap.min.css">
+      <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+      <script src="js/bootstrap.min.js" type="application/javascript"></script>
+
+  </head>
+  <body>
+  </body>
+  </html>
+
+ 第二步：
+ 在bootstrap官网找一个导航栏样式，放入index.html的body中去
+
+ 第三步：写一个controller,注意这里的注解用的是@Controller,我使@RestController的时候，访问浏览器返回的是字符串：index，原因还没查：
+package com.community.commucity;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+/**
+ * Created by 舒先亮 on 2019/8/20.
+ */
+@Controller
+public class CommucityController {
+
+    @GetMapping("/")
+    public String index(){
+        return "index";
+    }
+}
+
+此时我以为能够返回"index.html",但是由于没有在pom.xml文件中加入thymeleaf的依赖：
+             <dependency>
+    			<groupId>org.springframework.boot</groupId>
+    			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+    		</dependency>
+
+第四步：看一下github主页的api,主页拉到最下面有一个API接口
+    找到:Building a GitHub App or an OAuth App     创建一个GitHub的APP，或者授权APP
+
+第五步：在这之前，由于没有操作过git的提交，所以尝试先把我的workspace“springboot”初始化为管理库repository，
+    windows下，先进入springboot文件夹，按住Ctrl+鼠标右键，点击进入git bash
+    命令：git init             https://www.liaoxuefeng.com/wiki/896043488029600/896827951938304
+    添加：git add .
+    提交：git commit -m "add master of workspace"
+
+    设置身份认证：我是谁  git config --global user.email "1610700471@qq.com"
+                        git config --global user.name "Jackshufu"
+                        
+
+
+
+
+
