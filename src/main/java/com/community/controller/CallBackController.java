@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Created by 舒先亮 on 2019/8/20.
  */
@@ -31,7 +33,8 @@ public class CallBackController {
      * */
     @GetMapping("/callback")
     public String callBack(@RequestParam(name = "code") String code,
-                           @RequestParam(name = "state") String state) {
+                           @RequestParam(name = "state") String state,
+                            HttpServletRequest request) {
         /**
          * 社区收到这个消息之后，再次调用github的access_token接口，并携带code
          * */
@@ -45,6 +48,14 @@ public class CallBackController {
         System.out.println("accessToken = " + accessToken);
         GitHubUserDTO user = gitHubPrivider.getUser(accessToken);
         System.out.println("user = " + user.getId()+" "+user.getName()+" "+user.getBio());
-        return "index";
+        if(user != null){
+//            登陆成功，写cookie和session
+            request.getSession().setAttribute("user",user);
+            return "redirect:/";
+        }else{
+//            登录失败，重新登录
+            return "redirect:/";
+        }
+//        return "index";
     }
 }

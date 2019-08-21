@@ -125,8 +125,18 @@ json格式的数据转换成对象
             @Value("${github.redirect.uri}")
             private String redirectUri;
             
+ 步骤十一：什么是session，什么是cookie？
+    session就相当于银行账户，cookie就相当于银行卡，拿来银行卡，才能知道银行账户
+    HTTP是无状态的，怎样让服务器记住我的状态，每次带一个cookie来就好了
+ 1.在CallBackController的形参中加入
  
-    
+ 
+ 菜鸟教程：https://www.runoob.com
+ 步骤十二：
+    在application.properties中配置MySQL数据库：
+        spring.datasource.url=jdbc:mysql://localhost:3306/store?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+        spring.datasource.username=root
+        spring.datasource.password=root
  
  
  
