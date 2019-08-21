@@ -109,7 +109,23 @@ json格式的数据转换成对象
  Google打开匿名窗口：win   Ctrl+shift+N
  拼接如下：https://api.github.com/user?access_token=f47c9b74247c9342f4183c0543c704733ab5441e
  能够看到用户相关信息
-    其中我可以关注id ,name , bio 
+    其中我可以关注id ,name , bio  
+    
+ 步骤十：整个代码写完了，诸如client_id,client_secret,redirect_uri这些参数写在代码中不合适，我将他配置在application.properties
+ 中，如下(注意配置文件值的末端不能添加;号)：
+            github.client.id = Iv1.c83b663ef84a8086
+            github.client.secret = 8c41ac8a3ab868d25fbb36f8977172cbb45ad2b7
+            github.redirect.uri = http://localhost:8080/callback
+ 
+ 代码中依赖注入用@Value，其中${}中填的是配置文件中的key
+            @Value("${github.client.id}")
+            private String clientId;
+            @Value("${github.client.secret}")
+            private String clientSecret;
+            @Value("${github.redirect.uri}")
+            private String redirectUri;
+            
+ 
     
  
  

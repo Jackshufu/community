@@ -4,6 +4,7 @@ import com.community.dto.AccessTokenDTO;
 import com.community.dto.GitHubUserDTO;
 import com.community.privider.GitHubPrivider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,6 +18,14 @@ public class CallBackController {
     @Autowired
     private GitHubPrivider gitHubPrivider;
 
+    @Value("${github.client.id}")
+    private String clientId;
+    @Value("${github.client.secret}")
+    private String clientSecret;
+    @Value("${github.redirect.uri}")
+    private String redirectUri;
+
+
     /**
      * github回调我们注册App时填写的redirect-uri，并携带code
      * */
@@ -27,10 +36,10 @@ public class CallBackController {
          * 社区收到这个消息之后，再次调用github的access_token接口，并携带code
          * */
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
-        accessTokenDTO.setClient_id("Iv1.c83b663ef84a8086");
-        accessTokenDTO.setClient_secret("8c41ac8a3ab868d25fbb36f8977172cbb45ad2b7");
+        accessTokenDTO.setClient_id(clientId);
+        accessTokenDTO.setClient_secret(clientSecret);
         accessTokenDTO.setCode(code);
-        accessTokenDTO.setRedirect_uri("http://localhost:8080/callback");
+        accessTokenDTO.setRedirect_uri(redirectUri);
         accessTokenDTO.setState(state);
         String accessToken = gitHubPrivider.getAccessToken(accessTokenDTO);
         System.out.println("accessToken = " + accessToken);
