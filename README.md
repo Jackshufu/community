@@ -124,7 +124,7 @@
 		
     json格式的数据转换成对象
 
-    步骤九：当github通过验证并发放认证令牌后，社区如何通过access_token发起请求访问userAPI拿到user信息？
+# 步骤九：当github通过验证并发放认证令牌后，社区如何通过access_token发起请求访问userAPI拿到user信息？
     首先在github的Personal access tokens新建一个私人访问token，在官网API的描述下，模拟一下
      Google打开匿名窗口：win   Ctrl+shift+N
      拼接如下：https://api.github.com/user?access_token=f47c9b74247c9342f4183c0543c704733ab5441e
@@ -186,7 +186,13 @@
  了session，我们不使用框架为我们提供的session值，我们需要自己设置session值,登录成功之后，手动将session值设置到cookie里，这个session就是一个
  token，访问数据库的时候，我们可以拿着这个token去数据库里查。
  2. 将自己设置的session(token)存入数据库后，我们可以手动模拟cookie和session之间的交互，保证服务器宕机或者重启服务器的时候，
-    都会使得用户重新登录，并保有登录态
+    都会使得用户重新登录，并保有登录态->登录成功后，通过java代码往前端写cookie，以token为依据，来绑定前端和后端的登录状态。
+ 3. 把java代码中的UUID.randomUUID().toString()抽取出来，来代替曾经的session
+```java
+     String token = UUID.randomUUID().toString()
+```
+
+    
     
     int     对应java中的int
     bigint  对应java中的long类型
@@ -208,7 +214,8 @@
      备注：
         1.类类之间，对象在网络中传输使用DTO;
         2.对象在数据库中的话，我们叫他model
- 
+        3.service层需要抛出异常，controller层可以同一个异常，多处try-catch
+        
  
    
 
