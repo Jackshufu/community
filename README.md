@@ -133,11 +133,44 @@ json格式的数据转换成对象
  
  菜鸟教程：https://www.runoob.com
  步骤十二：
-    在application.properties中配置MySQL数据库：
+    1.在application.properties中配置MySQL数据库：
         spring.datasource.url=jdbc:mysql://localhost:3306/store?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
         spring.datasource.username=root
         spring.datasource.password=root
- 
+    2.添加JPA、mysql、jdbc依赖
+        <dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+        
+        
+ 思考关于cookie的问题，之所以能够在浏览器能找到服务器端，是因为页面发送那个了一个cookie给服务器，服务器端通过框架的解释将cookie路由到
+ 了session，我们不使用框架为我们提供的session值，我们需要自己设置session值,登录成功之后，手动将session值设置到cookie里，这个session就是一个
+ token，访问数据库的时候，我们可以拿着这个token去数据库里查
+    int     对应java中的int
+    bigint  对应java中的long类型
+    gmt     格林威治时间
+    
+ 步骤十三：集成mybatis,百度搜索Springboot mybatis，http://www.mybatis.org/spring-boot-starter/mybatis-spring-boot-autoconfigure/
+    1.添加MyBatis依赖：(这样才能够在Mapper类中使用@Mapper注解)
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>2.1.0</version>
+        </dependency>
+    
+ 备注：
+    1.类类之间，对象在网络中传输使用DTO;
+    2.对象在数据库中的话，我们叫他model
  
  
    

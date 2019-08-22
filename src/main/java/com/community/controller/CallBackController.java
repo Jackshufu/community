@@ -2,6 +2,7 @@ package com.community.controller;
 
 import com.community.dto.AccessTokenDTO;
 import com.community.dto.GitHubUserDTO;
+import com.community.mapper.UserMapper;
 import com.community.privider.GitHubPrivider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,6 +27,9 @@ public class CallBackController {
     private String clientSecret;
     @Value("${github.redirect.uri}")
     private String redirectUri;
+
+    @Autowired
+    private UserMapper userMapper;
 
 
     /**
