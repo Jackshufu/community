@@ -216,7 +216,40 @@
         2.对象在数据库中的话，我们叫他model
         3.service层需要抛出异常，controller层可以同一个异常，多处try-catch
         
- 
+# 步骤十四：还是要手动下的热部署
+    1. 在application.properties文件中配置 ：spring.thymeleaf.cache=false
+    此步骤先清除thymeleaf的缓存
+    1.1：重新启动一下主程序(run一下)，然后关闭主程序（否则执行1.2报错占用端口） 之后修改html，js，css等相关文件无需重启，按 Ctrl+f9 手动加载一下资源后直接刷新页面就可以看到可以修改，这样热部署就算成功了
+    1.2:使用maven方式启动：mvn spring-boot:run
+    2. 使用devtools方式
+    增加maven的devtools依赖
+```xml
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-devtools</artifactId>
+        <optional>true</optional>
+    </dependency>
+```
+    3.java代码热加载
+```xml
+    <plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<fork>true</fork>
+				</configuration>
+			</plugin>
+```
+
+# 步骤十五：引用jQuery和bootstrap.min.js顺序
+    如果bootstrap.min.js在jQuery的前面，则浏览器报错
+    Uncaught Error: Bootstrap's JavaScript requires jQuery at bootstrap.min.js:6
+    百度找到一个jQuery文件，问题解决：
+```html
+    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+```
+
+    
    
 
 

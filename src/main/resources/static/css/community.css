@@ -1,0 +1,13 @@
+.main{
+    margin: 50px;
+    background-color: #ffffff;
+}
+
+.bodyColor{
+    background-color: #efefef;
+}
+
+.buttonBottom{
+    float: right;
+    margin-bottom: 30px;
+}
