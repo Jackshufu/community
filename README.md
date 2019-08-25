@@ -249,6 +249,46 @@
     <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
 ```
 
+# 步骤十六：提交问题到数据库
+    1. 建表
+```mysql
+      CREATE TABLE `community`.`question` (
+      `id` INT NOT NULL AUTO_INCREMENT COMMENT '主键自增',
+      `title` VARCHAR(50) NULL COMMENT '问题标题',
+      `description` TEXT NULL COMMENT '问题的详细描述，放在文本编辑框，文本类型是TEXT类型',
+      `gmt_create` BIGINT NULL,
+      `gmt_modified` BIGINT NULL,
+      `creator` INT NULL,
+      `comment_count` INT NULL DEFAULT 0,
+      `view_count` INT NULL DEFAULT 0,
+      `like_count` INT NULL DEFAULT 0,
+      `tag` VARCHAR(256) NULL,
+      PRIMARY KEY (`id`))
+    COMMENT = '用于提交问题的表';
+```
+
+    2. 写一个QuestionMapper
+```java
+    package com.community.mapper;
+
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+
+/**
+ * Created by 舒先亮 on 2019/8/24.
+ */
+@Mapper
+public interface QuestionMapper {
+
+    @Insert("insert int question (title,description,gmt_create,gmt_modified,creator,tag) values (#{title}),#{description},#{gmt_create},#{gmt_modified},#{creator},#{tag}")
+    void insertQuestion();
+}
+
+```
+
+    3.后台通过Model传值给thymeleaf模板中的<input>输入框的时候，用的是th:value = "${Model的属性}"
+      <textarea>中用的是th:text ;其中要注意name的值要和Model的属性值一致    
+
     
    
 

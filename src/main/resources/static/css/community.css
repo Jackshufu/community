@@ -8,6 +8,8 @@
 }
 
 .buttonBottom{
+    margin-right: -10px;
     float: right;
+    margin-top: 10px;
     margin-bottom: 30px;
 }
