@@ -56,7 +56,7 @@ public class CallBackController {
         String accessToken = gitHubPrivider.getAccessToken(accessTokenDTO);
         System.out.println("accessToken = " + accessToken);
         GitHubUserDTO gitHubUser = gitHubPrivider.getUser(accessToken);
-        System.out.println("gitHubUser = " + gitHubUser.getId()+" "+gitHubUser.getName()+" "+gitHubUser.getBio());
+        System.out.println("gitHubUser = " + gitHubUser.getId()+" "+gitHubUser.getName()+" "+gitHubUser.getBio()+gitHubUser.getAvatarUrl());
         if(gitHubUser != null){
             User user = new User();
             user.setAccount_id(gitHubUser.getId().toString());
@@ -65,6 +65,7 @@ public class CallBackController {
             user.setToken(token);
             user.setGmt_create(System.currentTimeMillis());
             user.setGmt_modified(user.getGmt_create());
+            user.setAvatarUrl(gitHubUser.getAvatarUrl());
             userMapper.insert(user);
 //            登陆成功，写cookie和session
 //            request.getSession().setAttribute("gitHubUser",gitHubUser);

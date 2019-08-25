@@ -1,17 +1,20 @@
 package com.community.dto;
 
+import lombok.Data;
 import org.springframework.stereotype.Component;
 
 /**
  * Created by 舒先亮 on 2019/8/21.
  */
 @Component
+@Data
 public class GitHubUserDTO {
     private Long id;
     private String name;
     private String bio;
+    private String avatarUrl;
 
-    public Long getId() {
+    /*public Long getId() {
         return id;
     }
 
@@ -33,5 +36,5 @@ public class GitHubUserDTO {
 
     public void setBio(String bio) {
         this.bio = bio;
-    }
+    }*/
 }

@@ -1,11 +1,13 @@
 package com.community.model;
 
+import lombok.Data;
 import org.springframework.stereotype.Component;
 
 /**
  * Created by 舒先亮 on 2019/8/24.
  */
 @Component
+@Data
 public class Question {
     private Integer id;
     private String title;
@@ -18,7 +20,7 @@ public class Question {
     private Integer viewCount;
     private Integer likeCount;
 
-    public Integer getId() {
+    /*public Integer getId() {
         return id;
     }
 
@@ -96,5 +98,5 @@ public class Question {
 
     public void setLikeCount(Integer likeCount) {
         this.likeCount = likeCount;
-    }
+    }*/
 }

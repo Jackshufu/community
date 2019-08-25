@@ -1,11 +1,13 @@
 package com.community.dto;
 
+import lombok.Data;
 import org.springframework.stereotype.Component;
 
 /**
  * Created by 舒先亮 on 2019/8/20.
  */
 @Component
+@Data
 public class AccessTokenDTO {
     private String client_id;
     private String client_secret;
@@ -13,7 +15,7 @@ public class AccessTokenDTO {
     private String redirect_uri;
     private String state;
 
-    public String getClient_id() {
+    /*public String getClient_id() {
         return client_id;
     }
 
@@ -51,5 +53,5 @@ public class AccessTokenDTO {
 
     public void setState(String state) {
         this.state = state;
-    }
+    }*/
 }

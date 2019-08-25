@@ -287,7 +287,24 @@ public interface QuestionMapper {
 ```
 
     3.后台通过Model传值给thymeleaf模板中的<input>输入框的时候，用的是th:value = "${Model的属性}"
-      <textarea>中用的是th:text ;其中要注意name的值要和Model的属性值一致    
+      <textarea>中用的是th:text ;其中要注意name的值要和Model的属性值一致
+          
+# 步骤十七：当用户登录返回一个头像
+```mysql
+  ALTER TABLE `community`.`user` 
+ADD COLUMN `avatar_url` VARCHAR(100) NULL AFTER `gmt_modified`;
+```
+    1.一个新知识点，如何使用Lombok？去官网查询，添加依赖,IDEA还需要下载一个插件
+```xml
+    <dependency>
+		<groupId>org.projectlombok</groupId>
+		<artifactId>lombok</artifactId>
+		<version>1.18.8</version>
+		<scope>provided</scope>
+	</dependency>
+```
+    2.将后台获取的头像URL，放在首页亮亮的位置
+    
 
     
    

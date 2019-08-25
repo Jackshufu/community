@@ -68,16 +68,22 @@ public class PublishController {
          * 判断是否登录，没有登录则报错未登录，并返回发布页面，cookie是放在request里的，因此我们要申明request参数
          * */
         Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            if(cookie.getName().equals("token")){
-                String token = cookie.getValue();
-                foundUserByToken = userMapper.findUserByToken(token);
-                if(foundUserByToken != null && foundUserByToken.getId() != null){
-                    request.getSession().setAttribute("foundUserByToken",foundUserByToken);
-                }
-                break;
-            }
+        if(cookies == null){
+            model.addAttribute("error", "该用户未登录");
+            return "publish";
+        }else{
 
+            for (Cookie cookie : cookies) {
+                if(cookie.getName().equals("token")){
+                    String token = cookie.getValue();
+                    foundUserByToken = userMapper.findUserByToken(token);
+                    if(foundUserByToken != null && foundUserByToken.getId() != null){
+                        request.getSession().setAttribute("foundUserByToken",foundUserByToken);
+                    }
+                    break;
+                }
+
+            }
         }
         if(foundUserByToken == null){
             model.addAttribute("error", "该用户未登录");
@@ -94,6 +100,5 @@ public class PublishController {
 
         questionMapper.insertQuestion(question);
         return "publish";
-
     }
 }
