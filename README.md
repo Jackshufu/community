@@ -304,6 +304,9 @@ ADD COLUMN `avatar_url` VARCHAR(100) NULL AFTER `gmt_modified`;
 	</dependency>
 ```
     2.将后台获取的头像URL，放在首页亮亮的位置
+
+# 步骤十八：
+    
     
 
     
