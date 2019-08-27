@@ -303,9 +303,17 @@ ADD COLUMN `avatar_url` VARCHAR(100) NULL AFTER `gmt_modified`;
 		<scope>provided</scope>
 	</dependency>
 ```
-    2.将后台获取的头像URL，放在首页亮亮的位置
+    2.将后台获取的头像URL，放在首页亮亮的位置(还未完成)
 
-# 步骤十八：
+# 步骤十八：遍历数据库question表，展示在首页
+    1.需要根据question表获取展示问题所需要的关键字，还需要根据用户的信息获取用户的头像，这些的实现需要我新建一个
+    对象类QuestionDTO，用来实现数据在网络中传输。
+    2.为了将数据库表question和user的属性查找出来，我们创建了一个QuestionDTO的类，这两个整合的model对象，我们使用
+    service层对其进行处理
+    3.将查出来的两个集合对象揉合到一起，使用方法BeanUtils方法，将对象属性（第一个参数）转换称第二个对象属性（其实这里可以用级联查询）
+    4.遍历用th:each   th:each="question : ${questions}"；传后台图片用th:src  th:src="${question.user.avatar_url}"
+    5.mybatis驼峰命名法则在application.properties配置：mybatis.configuration.map-underscore-to-camel-case=true
+    
     
     
 

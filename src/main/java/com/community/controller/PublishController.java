@@ -94,9 +94,9 @@ public class PublishController {
         question.setTitle(title);
         question.setDescription(description);
         question.setTag(tag);
-        question.setGmt_create(System.currentTimeMillis());
-        question.setGmt_modified(question.getGmt_create());
-        question.setCreator(Integer.valueOf(foundUserByToken.getAccount_id()));
+        question.setGmtCreate(System.currentTimeMillis());
+        question.setGmt_modified(question.getGmtCreate());
+        question.setCreator(foundUserByToken.getId());
 
         questionMapper.insertQuestion(question);
         return "publish";

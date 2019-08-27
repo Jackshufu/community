@@ -8,6 +8,7 @@ import com.community.privider.GitHubPrivider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -38,12 +39,12 @@ public class CallBackController {
 
     /**
      * github回调我们注册App时填写的redirect-uri，并携带code
-     * */
+     */
     @GetMapping("/callback")
     public String callBack(@RequestParam(name = "code") String code,
                            @RequestParam(name = "state") String state,
-                            HttpServletRequest request,
-                            HttpServletResponse reaponse) {
+                           HttpServletRequest request,
+                           HttpServletResponse reaponse) {
         /**
          * 社区收到这个消息之后，再次调用github的access_token接口，并携带code
          * */
@@ -56,8 +57,8 @@ public class CallBackController {
         String accessToken = gitHubPrivider.getAccessToken(accessTokenDTO);
         System.out.println("accessToken = " + accessToken);
         GitHubUserDTO gitHubUser = gitHubPrivider.getUser(accessToken);
-        System.out.println("gitHubUser = " + gitHubUser.getId()+" "+gitHubUser.getName()+" "+gitHubUser.getBio()+gitHubUser.getAvatarUrl());
-        if(gitHubUser != null){
+        System.out.println("gitHubUser = " + gitHubUser.getId() + " " + gitHubUser.getName() + " " + gitHubUser.getBio() + gitHubUser.getAvatarUrl());
+        if (gitHubUser != null) {
             User user = new User();
             user.setAccount_id(gitHubUser.getId().toString());
             user.setName(gitHubUser.getName());
@@ -69,9 +70,9 @@ public class CallBackController {
             userMapper.insert(user);
 //            登陆成功，写cookie和session
 //            request.getSession().setAttribute("gitHubUser",gitHubUser);
-            reaponse.addCookie(new Cookie("token",token));
+            reaponse.addCookie(new Cookie("token", token));
             return "redirect:/";
-        }else{
+        } else {
 //            登录失败，重新登录
             return "redirect:/";
         }
