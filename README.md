@@ -312,6 +312,7 @@ ADD COLUMN `avatar_url` VARCHAR(100) NULL AFTER `gmt_modified`;
     service层对其进行处理
     3.将查出来的两个集合对象揉合到一起，使用方法BeanUtils方法，将对象属性（第一个参数）转换称第二个对象属性（其实这里可以用级联查询）
     4.遍历用th:each   th:each="question : ${questions}"；传后台图片用th:src  th:src="${question.user.avatar_url}"
+    将文本展示在页面上用th:text = "${model里传过来值.属性}"  进行展示。
     5.mybatis驼峰命名法则在application.properties配置：mybatis.configuration.map-underscore-to-camel-case=true
     
     
