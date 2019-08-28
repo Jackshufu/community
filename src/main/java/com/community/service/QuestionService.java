@@ -54,4 +54,24 @@ public class QuestionService {
 
         return  questionDTOList;
     }
+
+    public List<QuestionDTO> findList1() {
+//        查出所有的question数据，放在list集合里面
+        List<Question> questions = questionMapper.queryQuestion();
+        List<QuestionDTO> questionDTOList = new ArrayList<>();
+        System.out.println("questions = " + questions);
+//        使用循环遍历，获取具体的question
+        for (Question question : questions) {
+            QuestionDTO questionDTO = new QuestionDTO();
+            BeanUtils.copyProperties(question,questionDTO);
+            questionDTOList.add(questionDTO);
+        }
+
+        System.out.println("questionDTOList = " + questionDTOList);
+
+
+//        questionDTO.setTitle();
+
+        return  questionDTOList;
+    }
 }

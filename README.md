@@ -315,6 +315,20 @@ ADD COLUMN `avatar_url` VARCHAR(100) NULL AFTER `gmt_modified`;
     将文本展示在页面上用th:text = "${model里传过来值.属性}"  进行展示。
     5.mybatis驼峰命名法则在application.properties配置：mybatis.configuration.map-underscore-to-camel-case=true
     
+# 步骤十九：thymeleaf+pagehelper实现分页查询
+[Pagehelper 官网](https://pagehelper.github.io/docs/howtouse/)
+    1.先引入依赖
+```xml
+<!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper-spring-boot-starter -->
+<dependency>
+    <groupId>com.github.pagehelper</groupId>
+    <artifactId>pagehelper-spring-boot-starter</artifactId>
+    <version>1.2.12</version>
+</dependency>
+
+```
+    2.
+    
     
     
 

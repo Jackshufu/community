@@ -65,20 +65,7 @@
                 <span class="glyphicon glyphicon-list"></span>发现
             </h2>
             <hr>
-            <div class="media" th:each="question : ${questions}">
-                <div class="media-left">
-                    <a href="/">
-                        <img class="media-object img-rounded" th:src="${question.user.avatarUrl}">
-                    </a>
-                </div>
-                <div class="media-body">
-                    <h4 class="media-heading" th:text="${question.title}"></h4>
-                    <span th:text="${question.description}"></span><br>
-                    <span class="text-desc"><span th:text="${question.commentCount}"></span>个回复 • <span
-                            th:text="${question.viewCount}"></span> 次浏览 • <span
-                            th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd hh:mm')}"></span></span>
-                </div>
-            </div>
+
             <div class="modal-footer no-margin-top">
                 <div class="col-md-6">
                     当前第 [[${qDTOPageInfo.pageNum}]]页,共 [[${qDTOPageInfo.pages}]] 页.一共 [[${qDTOPageInfo.total}]] 条记录<br>

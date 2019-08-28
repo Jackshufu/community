@@ -1,7 +1,9 @@
 package com.community.controller;
 
 import com.community.dto.QuestionDTO;
+import com.community.mapper.QuestionMapper;
 import com.community.mapper.UserMapper;
+import com.community.model.Question;
 import com.community.model.User;
 import com.community.service.QuestionService;
 import com.github.pagehelper.PageHelper;
@@ -20,7 +22,7 @@ import java.util.List;
  * Created by 舒先亮 on 2019/8/20.
  */
 @Controller
-public class CommucityController {
+public class PageHelperController {
 
     @Autowired
     private UserMapper userMapper;
@@ -28,34 +30,15 @@ public class CommucityController {
     @Autowired
     private QuestionService questionService;
 
-    @GetMapping("/")
+    @Autowired
+    private QuestionMapper questionMapper;
+
+    @GetMapping("/pageHelper")
     public String index(HttpServletRequest request,
                         Model model,
                         @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                         @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize) {
-//        当访问首页的时候，先获取请求中的cookies
-        Cookie[] cookies = request.getCookies();
-        System.out.println("11111111111133");
-        /*if(cookies == null){
-            return "index";
-        }else*/
-        if (cookies != null) {
-//         遍历cookies，查找键为token的session,如果某一个cookie的键等于token，则获取它的值，为session
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("token")) {
-//                这个token是数据库中存的值
-                    String token = cookie.getValue();
-                    System.out.println(" 数据库中找到和token相等的了 ");
-//                通过找到数据库中存的token，再通过它查找user的全部信息
-                    User userFindByToken = userMapper.findUserByToken(token);
-                    if (userFindByToken != null) {
-
-                        request.getSession().setAttribute("userFindByToken", userFindByToken);
-                    }
-                    break;
-                }
-            }
-        }
+//
         /**
          * 登录 后对question数据进行分页
          * */
@@ -73,16 +56,16 @@ public class CommucityController {
 //        2引入分页插件，pageNum为第几页，pageSize为分页展示页面总数，count为查询总数
         PageHelper.startPage(pageNum, pageSize);
         try {
-            List<QuestionDTO> questions = questionService.findList();
+            List<Question> questions = questionMapper.queryQuestion();
             model.addAttribute("questions", questions);
             System.out.println("questions = " + questions);
 
-            PageInfo<QuestionDTO> questionDTOPageInfo = new PageInfo<>(questions, pageSize);
-            System.out.println("questionDTOPageInfo = " + questionDTOPageInfo.getList());
-            model.addAttribute("qDTOPageInfo", questionDTOPageInfo);
+            PageInfo<Question> questionPageInfo = new PageInfo<>(questions, pageSize);
+            System.out.println("questionPageInfo = " + questionPageInfo);
+            model.addAttribute("qDTOPageInfo", questionPageInfo);
         } finally {
             PageHelper.clearPage();//清除ThreadLocal存储 的分页信息，保证线程安全
         }
-        return "index";
+        return "pagehelper";
     }
 }
