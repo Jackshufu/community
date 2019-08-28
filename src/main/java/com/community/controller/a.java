@@ -1,16 +1,21 @@
+/*
 package com.community.controller;
 
+*/
 /**
  * Created by 舒先亮 on 2019/8/28.
- */
+ *//*
+
 public class a {
     @Override
     public PageInfo<DeviceReturnWebVO> queryDeviceByCondition(ConditionForQueryDeviceInfoBO conditionForQueryDeviceInfoBO) {
         log.info(Thread.currentThread().getStackTrace()[1].getMethodName() + "=====根据条件获取设备概览信息====:" + JSON.toJSONString(conditionForQueryDeviceInfoBO));
         List<DeviceReturnWebVO> deviceReturnWebs = new ArrayList<>();
-        /**
+        */
+/**
          * 获取设备概要信息
-         */
+         *//*
+
         long startTime = System.currentTimeMillis();
         PageHelper.startPage(conditionForQueryDeviceInfoBO.getPageNumber(), conditionForQueryDeviceInfoBO.getPageSize());
         List<DeviceReturnWebVO> page = iDeviceManageDao.queryDeviceByCondition(conditionForQueryDeviceInfoBO);
@@ -41,3 +46,4 @@ public class a {
     }
 
 }
+*/

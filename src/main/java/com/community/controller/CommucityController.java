@@ -71,15 +71,20 @@ public class CommucityController {
         }
         System.out.println("初始页面，当前位置为第" + pageNum + "页" + "   分页范围:展示" + pageSize + "页");
 //        2引入分页插件，pageNum为第几页，pageSize为分页展示页面总数，count为查询总数
-        PageHelper.startPage(pageNum, pageSize);
+//        PageHelper.startPage(pageNum, pageSize);
         try {
-            List<QuestionDTO> questions = questionService.findList();
+            PageInfo<QuestionDTO> questions = questionService.findList(pageNum,pageSize);
             model.addAttribute("questions", questions);
-            System.out.println("questions = " + questions);
+            List<QuestionDTO> questionsList = questions.getList();
+            System.out.println("questions = " + questionsList);
+            /*for (QuestionDTO questionDTO : questionsList) {
+                System.out.println("questionDTO = " + questionDTO);
+            }*/
+            model.addAttribute("questionsList", questionsList);
 
-            PageInfo<QuestionDTO> questionDTOPageInfo = new PageInfo<>(questions, pageSize);
-            System.out.println("questionDTOPageInfo = " + questionDTOPageInfo.getList());
-            model.addAttribute("qDTOPageInfo", questionDTOPageInfo);
+//            PageInfo<QuestionDTO> questionDTOPageInfo = new PageInfo<>(questions, pageSize);
+//            System.out.println("questionDTOPageInfo = " + questionDTOPageInfo.getList());
+//            model.addAttribute("questions", questions);
         } finally {
             PageHelper.clearPage();//清除ThreadLocal存储 的分页信息，保证线程安全
         }

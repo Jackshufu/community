@@ -1,10 +1,13 @@
 package com.community.service;
 
 import com.community.dto.QuestionDTO;
+import com.community.mapper.QuestionDTOMapper;
 import com.community.mapper.QuestionMapper;
 import com.community.mapper.UserMapper;
 import com.community.model.Question;
 import com.community.model.User;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,17 +27,22 @@ public class QuestionService {
     @Autowired
     private QuestionMapper questionMapper;
 
+    @Autowired
+    private QuestionDTOMapper questionDTOMapper;
+
 //    @Autowired
 //    private QuestionDTO questionDTO;
 
 
-    public List<QuestionDTO> findList() {
+    public PageInfo<QuestionDTO> findList(Integer pageNum, Integer pageSize) {
 //        查出所有的question数据，放在list集合里面
-        List<Question> questions = questionMapper.queryQuestion();
         List<QuestionDTO> questionDTOList = new ArrayList<>();
+        PageHelper.startPage(pageNum, pageSize);
+        List<QuestionDTO> questions = questionDTOMapper.queryQuestionDTO();
+        PageInfo<QuestionDTO> pageInfo = new PageInfo<>(questions);
         System.out.println("questions = " + questions);
 //        使用循环遍历，获取具体的question
-        for (Question question : questions) {
+        for (QuestionDTO question : questions) {
 //            questionDTO.setTitle(question.getTitle());
 //            questionDTO.setDescription(question.getDescription());
 //            questionDTO.setTag(question.getTag());
@@ -46,13 +54,13 @@ public class QuestionService {
             questionDTO.setUser(user);
             questionDTOList.add(questionDTO);
         }
-
+        pageInfo.setList(questionDTOList);
         System.out.println("questionDTOList = " + questionDTOList);
 
 
 //        questionDTO.setTitle();
 
-        return  questionDTOList;
+        return  pageInfo;
     }
 
     public List<QuestionDTO> findList1() {

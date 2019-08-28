@@ -65,7 +65,7 @@
                 <span class="glyphicon glyphicon-list"></span>发现
             </h2>
             <hr>
-            <div class="media" th:each="question : ${questionsList}">
+            <div class="media" th:each="question : ${questions}">
                 <div class="media-left">
                     <a href="/">
                         <img class="media-object img-rounded" th:src="${question.user.avatarUrl}">
@@ -81,8 +81,8 @@
             </div>
             <div class="modal-footer no-margin-top">
                 <div class="col-md-6">
-                    当前第 [[${questions.pageNum}]]页,共 [[${questions.pages}]] 页.一共 [[${questions.total}]] 条记录<br>
-
+                    当前第 [[${qDTOPageInfo.pageNum}]]页,共 [[${qDTOPageInfo.pages}]] 页.一共 [[${qDTOPageInfo.total}]] 条记录<br>
+                    <span th:text="${qDTOPageInfo}"></span>
                 </div>
 
             </div>

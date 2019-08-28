@@ -327,7 +327,17 @@ ADD COLUMN `avatar_url` VARCHAR(100) NULL AFTER `gmt_modified`;
 </dependency>
 
 ```
-    2.
+    2.分页的时候前端发起请求，进入index页面的时候，会携带pageNum(不是必须的)和pageSize（无要求）,后端判断两个参数的实际值，并设置默认
+    然后调用startPage方法开始分页，注意紧跟着这个方法后面就是一个数据库查询语句的方法（XXXMapper.queryXXX），然后new PageInfo<XXX>
+    就能够进行分页，最后设置到model里面去。
+    
+    2.1 问题：主要就是startPage后面紧跟的必须是一条查询语句，但是我们视频里的是先查出question的list，再遍历list，通过question表中的
+    creator字段去User表再查一遍找头像，导致，pageHelper分页出来后total=pageSize。
+    解决：但是，当我的查询语句中还包含一个关联查询的时候，这个时候我查询问题返回的List集合的泛型可以设置为QuestionDTO，查出来的数据包含
+    空user，可以接受，然后再增强for循环遍历List，找到每一个question，通过creator值去查找User类中的头像的URL设置到questionDTO中，这样
+    每个questionDTO对象就会都找到自己的用户头像了，再将这整个questionDTO添加到questionDTOList中去，set到pageInfo中去，并返回pageInfo
+    对象，这样查出来的total就不会等于pageSize了
+    参考博文：https://blog.csdn.net/zs40122/article/details/82620781
     
     
     

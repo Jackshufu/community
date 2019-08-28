@@ -1,7 +1,10 @@
 package com.community.mapper;
 
+import com.community.dto.QuestionDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * Created by 舒先亮 on 2019/8/26.
@@ -10,5 +13,5 @@ import org.apache.ibatis.annotations.Select;
 public interface QuestionDTOMapper {
 
     @Select("select * from question")
-    void queryQuestion();
+    List<QuestionDTO> queryQuestionDTO();
 }
