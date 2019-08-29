@@ -78,6 +78,39 @@
                             th:text="${question.viewCount}"></span> 次浏览 • <span
                             th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd hh:mm')}"></span></span>
                 </div>
+                <div class="modal-footer no-margin-top">
+                    <div class="col-md-6">
+                        当前第 [[${questions.pageNum}]]页,共 [[${questions.pages}]] 页.一共 [[${questions.total}]] 条记录<br>
+                    </div>
+                    <ul class="pagination pull-right no-margin">
+                        <li th:if="${questions.hasPreviousPage}">
+                            <a th:href="'/index?pageNum=1'">首页</a>
+                        </li>
+
+                        <li class="prev" th:if="${questions.hasPreviousPage}">
+                            <a th:href="'/index?pageNum='+${questions.prePage}">
+                                <i class="ace-icon fa fa-angle-double-left"></i>
+                            </a>
+                        </li>
+                        <!--遍历条数-->
+                        <li th:each="nav:${questions.navigatepageNums}">
+                            <a th:href="'/index?pageNum='+${nav}" th:text="${nav}" th:if="${nav != questions.pageNum}"></a>
+                            <span style="font-weight: bold;background: #6faed9;" th:if="${nav == questions.pageNum}" th:text="${nav}" ></span>
+                        </li>
+
+                        <li class="next" th:if="${questions.hasNextPage}">
+                            <a th:href="'/index?pageNum='+${questions.nextPage}">
+                                <i class="ace-icon fa fa-angle-double-right"></i>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a th:href="'/index?pageNum='+${questions.pages}">尾页</a>
+                        </li>
+                    </ul>
+
+
+                </div>
             </div>
             <div class="modal-footer no-margin-top">
                 <div class="col-md-6">

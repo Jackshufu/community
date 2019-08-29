@@ -28,7 +28,7 @@ public class CommucityController {
     @Autowired
     private QuestionService questionService;
 
-    @GetMapping("/")
+    @GetMapping("/index")
     public String index(HttpServletRequest request,
                         Model model,
                         @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum,

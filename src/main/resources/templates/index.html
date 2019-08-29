@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="css/community.css">
-    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <!--<script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>-->
+    <script src="js/jquery-3.4.1.min.js"></script>
     <script src="js/bootstrap.min.js" type="application/javascript"></script>
 
 </head>
@@ -22,7 +23,7 @@
                     data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                 <span class="sr-only">亮亮社区</span>
             </button>
-            <a class="navbar-brand" href="/">亮亮社区</a>
+            <a class="navbar-brand" href="/index">亮亮社区</a>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -43,8 +44,9 @@
                     </li>
                     <li class="dropdown" th:if="${session.userFindByToken} != null">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false" th:text="${session.userFindByToken.getName()}"><span
-                                class="caret"></span></a>
+                           aria-expanded="false" >
+                            <spqn th:text="${session.userFindByToken.getName()}"></spqn>
+                            <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="#">消息中心</a></li>
                             <li><a href="#">个人资料 action</a></li>
@@ -82,10 +84,39 @@
             <div class="modal-footer no-margin-top">
                 <div class="col-md-6">
                     当前第 [[${questions.pageNum}]]页,共 [[${questions.pages}]] 页.一共 [[${questions.total}]] 条记录<br>
-
                 </div>
+                <ul class="pagination pull-right no-margin">
+                    <li th:if="${questions.hasPreviousPage}">
+                        <a th:href="'/index?pageNum=1'">首页</a>
+                    </li>
 
+                    <li class="prev" th:if="${questions.hasPreviousPage}">
+                        <a th:href="'/index?pageNum='+${questions.prePage}">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <!--遍历条数-->
+                    <li th:each="nav:${questions.navigatepageNums}">
+                        <a th:href="'/index?pageNum='+${nav}" th:text="${nav}" th:if="${nav != questions.pageNum}"></a>
+                        <span style="font-weight: bold;background: #6faed9;" th:if="${nav == questions.pageNum}" th:text="${nav}" ></span>
+                    </li>
+
+                    <li class="next" th:if="${questions.hasNextPage}">
+                        <a th:href="'/index?pageNum='+${questions.nextPage}">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+
+                    <li th:if = "${questions.hasNextPage}">
+                        <a th:href="'/index?pageNum='+${questions.pages}">尾页</a>
+                    </li>
+                </ul>
             </div>
+            <!--<span th:text="${questions.pageNum}"></span><br>
+            <span th:text="${questions.hasPreviousPage}"></span><br>
+            <span th:text="${nav}"></span><br>
+            <span th:text="${questions.nextPage}"></span><br>
+            <span th:text="${questions}"></span>-->
         </div>
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
             <h3>热门话题</h3>
@@ -98,7 +129,6 @@
         </div>
     </div>
 </div>
-
 </body>
 
 </html>

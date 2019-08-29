@@ -71,10 +71,10 @@ public class CallBackController {
 //            登陆成功，写cookie和session
 //            request.getSession().setAttribute("gitHubUser",gitHubUser);
             reaponse.addCookie(new Cookie("token", token));
-            return "redirect:/";
+            return "redirect:index";
         } else {
 //            登录失败，重新登录
-            return "redirect:/";
+            return "redirect:index";
         }
 //        return "index";
     }
