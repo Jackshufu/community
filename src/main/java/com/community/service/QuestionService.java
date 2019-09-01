@@ -47,7 +47,7 @@ public class QuestionService {
 //            questionDTO.setDescription(question.getDescription());
 //            questionDTO.setTag(question.getTag());
 //            通过每个question的creator获取user
-            User user = userMapper.findUserById(question.getCreator());
+            User user = userMapper.findUserById(question.getUserId());
             System.out.println("user = " + user);
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question,questionDTO);
@@ -81,5 +81,34 @@ public class QuestionService {
 //        questionDTO.setTitle();
 
         return  questionDTOList;
+    }
+
+    public PageInfo<QuestionDTO> findMyList(Integer pageNum, Integer pageSize,String accountId) {
+        //        查出所有的question数据，放在list集合里面
+        List<QuestionDTO> questionDTOList = new ArrayList<>();
+        PageHelper.startPage(pageNum, pageSize);
+        List<QuestionDTO> questions = questionDTOMapper.queryMyQuestionDTO(accountId);
+        PageInfo<QuestionDTO> pageInfo = new PageInfo<>(questions);
+        System.out.println("questions = " + questions);
+//        使用循环遍历，获取具体的question
+        for (QuestionDTO question : questions) {
+//            questionDTO.setTitle(question.getTitle());
+//            questionDTO.setDescription(question.getDescription());
+//            questionDTO.setTag(question.getTag());
+//            通过每个question的creator获取user
+            User user = userMapper.findUserById(question.getUserId());
+            System.out.println("user = " + user);
+            QuestionDTO questionDTO = new QuestionDTO();
+            BeanUtils.copyProperties(question,questionDTO);
+            questionDTO.setUser(user);
+            questionDTOList.add(questionDTO);
+        }
+        pageInfo.setList(questionDTOList);
+        System.out.println("questionDTOList = " + questionDTOList);
+
+
+//        questionDTO.setTitle();
+
+        return  pageInfo;
     }
 }

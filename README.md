@@ -339,6 +339,29 @@ ADD COLUMN `avatar_url` VARCHAR(100) NULL AFTER `gmt_modified`;
     对象，这样查出来的total就不会等于pageSize了
     参考博文：https://blog.csdn.net/zs40122/article/details/82620781
     
+# 步骤二十：之前引入了JQuery，此时如何证明JQuery引入成功了呢？
+在浏览器的控制台输入$符，会出来一串信息ƒ (e,t){return new k.fn.init(e,t)}，说明引入成功了
+我们操作DOM的时候都是用JQuery去做
+比如说我们用document.getElementsByClassName("main")来获取修饰css的class，可以这么操作，也可以用如下的JQuery去操作：$(".main")
+
+# 如何让样式跟着选中的走？
+```html
+    <a href="/profile/questions"  th:class="(${action} == 'questions') ? ('list-group-item active'):('list-group-item')" >
+```
+    * 其中的小括号可以去掉
+    
+# 步骤二十一 ：在个人中心的“我的问题”栏位展示只属于我的问题
+    为了能够在创建question的时候记录下唯一创建人，用user表的自增id肯定不行，因为id是变的，但是里面的accountId使用的是github账户用户的id
+    是唯一的，因此在设置question的creator的时候，可以用user表中的accountId;
+        小插曲：在创建字段的时候，user表中的accountId使用的是account_id，由于配置文件设置的映射是驼峰命名规则，导致项目启动后插入问题的时候
+        account_id映射不到，报错“java.lang.NumberFormatException: null”
+        解决办法：将user表中的account_id字段改成accountId,并把相应的引用位置改变即可
+        
+    
+    
+# 问题
+    这个项目是什么类型的软件，目标用户是什么群体，我负责哪些模块，这些说完，要有突出的亮点
+    商品添加的功能，添加的时候也可以加一些别的逻辑
     
     
 

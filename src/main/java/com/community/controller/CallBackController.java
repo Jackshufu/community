@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
 import java.util.UUID;
 
 /**
@@ -60,10 +61,12 @@ public class CallBackController {
         System.out.println("gitHubUser = " + gitHubUser.getId() + " " + gitHubUser.getName() + " " + gitHubUser.getBio() + gitHubUser.getAvatarUrl());
         if (gitHubUser != null) {
             User user = new User();
-            user.setAccount_id(gitHubUser.getId().toString());
+            user.setAccountId(gitHubUser.getId().toString());
             user.setName(gitHubUser.getName());
             String token = UUID.randomUUID().toString();
             user.setToken(token);
+//            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy-MM-dd hh:mm:ss");
+//            String format = simpleDateFormat.format(System.currentTimeMillis());
             user.setGmt_create(System.currentTimeMillis());
             user.setGmt_modified(user.getGmt_create());
             user.setAvatarUrl(gitHubUser.getAvatarUrl());

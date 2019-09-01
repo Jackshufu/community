@@ -14,4 +14,7 @@ public interface QuestionDTOMapper {
 
     @Select("select * from question")
     List<QuestionDTO> queryQuestionDTO();
+
+    @Select("select * from question where creator = #{creator}")
+    List<QuestionDTO> queryMyQuestionDTO(String accountId);
 }
