@@ -35,26 +35,12 @@ public class ProfileController {
                                 Model model,
                                 @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                                 @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize){
-//        1.校验是否登录，没有登录则返回首页
-        User userFoundByToken = null;
-        Cookie[] cookies = request.getCookies();
-
-        if(cookies != null){
-            for (Cookie cookie : cookies) {
-                if(cookie.getName().equals("token")){
-                    String token = cookie.getValue();
-                    userFoundByToken = userMapper.findUserByToken(token);
-                    if(userFoundByToken != null){
-                        request.getSession().setAttribute("userFoundByToken",userFoundByToken);
-                    }
-                    break;
-                }
-            }
-        }
+//        1.拦截器校验是否登录，没有登录则返回首页
+        User userFoundByToken = (User) request.getSession().getAttribute("userFindByToken");
 
         if(userFoundByToken == null){
             model.addAttribute("error", "请登录查看我的问题列表");
-            return "profile";
+            return "index";
         }
 
 

@@ -23,7 +23,7 @@
                 <span class="glyphicon glyphicon-list" th:text="${actionName}"></span>
             </h2>
             <hr>
-            <div th:if="${action} == 'question'">
+<!--            <div th:if="${action} == 'question'">-->
                 <div class="media" th:each="question : ${myQuestionsList}">
                     <div class="media-left">
                         <a href="/">
@@ -81,7 +81,7 @@
                 <span th:text="${questions.nextPage}"></span><br>
                 <span th:text="${questions}"></span>-->
             </div>
-            </div>
+<!--            </div>-->
 
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
             <div class="list-group">

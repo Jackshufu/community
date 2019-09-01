@@ -357,8 +357,19 @@ ADD COLUMN `avatar_url` VARCHAR(100) NULL AFTER `gmt_modified`;
         account_id映射不到，报错“java.lang.NumberFormatException: null”
         解决办法：将user表中的account_id字段改成accountId,并把相应的引用位置改变即可
         
-    
-    
+# 问题二十二： 配置拦截器
+[spring配置拦截器官方文档地址](https://docs.spring.io/spring/docs/5.1.9.RELEASE/spring-framework-reference/web.html#mvc-handlermapping-interceptor)
+点击实例创建拦截器
+    注意  
+        1.当拦截器interceptor中注入了UserMapper后，webConfig文件中就不能通过new去实例化一个对象，也要通过注入的方式。
+        2.@EnableWebMvc使用后，代表你全面接管springMVC，之前的默认配置都没了，样式就很丑了，此时应该讲WebConfig中的@EnableWebMvc注解去除，就会有样式了
+        3.每个controller怎么获取拦截器里的user？
+  ```java
+        //userFindByToken是拦截器里set的值
+        User foundUserByToken = (User) request.getSession().getAttribute("userFindByToken");
+  ```
+ P30源码分析，再过一遍   
+
 # 问题
     这个项目是什么类型的软件，目标用户是什么群体，我负责哪些模块，这些说完，要有突出的亮点
     商品添加的功能，添加的时候也可以加一些别的逻辑
