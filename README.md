@@ -369,6 +369,18 @@ ADD COLUMN `avatar_url` VARCHAR(100) NULL AFTER `gmt_modified`;
         User foundUserByToken = (User) request.getSession().getAttribute("userFindByToken");
   ```
  P30源码分析，再过一遍   
+ 
+# 问题二十三：点击问题标题进入问题页面
+    1.疑问：由于和匠哥之前通过question查找user是通过question的creator和user表中的id一致，我改成通过question查到user之后，在question中将creator赋值user
+    表的account_id,现在都改成String类型了，在页面再判断就能判断出来，我想知道用这种String会不会影响速度
+    2.为了整改登录验证是否已经存在user{若存在，则update，若不存在，则insert}，测试的时候，我把原始user数据删除了后，访问index页面的时候，发现页面报错，
+    原因是我把user都删除了，之前首页是需要展示question的（所有user），当我删除之后，展现question的前端就找不到user了，近而找不到需要展示页面的参数，因此就报错了
+    解决办法，将question表的数据也删除掉，这也证明了我的程序还是有bug的，后期再看看，先记录下
+    3.当对登录进行验证了之后，我自己创建的将user表中的account_id赋值给question表的creator是没有必要的了
+    4.当我修改account_id后，我的浏览器还有cookie的时候，还是能够登录的
+    
+# 问题二十四：退出登录
+    1.删除cookie，退出服务端的session
 
 # 问题
     这个项目是什么类型的软件，目标用户是什么群体，我负责哪些模块，这些说完，要有突出的亮点

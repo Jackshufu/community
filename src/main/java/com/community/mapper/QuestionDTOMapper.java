@@ -1,6 +1,7 @@
 package com.community.mapper;
 
 import com.community.dto.QuestionDTO;
+import com.community.model.Question;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -17,4 +18,8 @@ public interface QuestionDTOMapper {
 
     @Select("select * from question where creator = #{creator}")
     List<QuestionDTO> queryMyQuestionDTO(String accountId);
+
+
+    @Select("select * from question where id = #{id}")
+    QuestionDTO queryMyQuestionDTOById(Integer id);
 }

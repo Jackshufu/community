@@ -82,7 +82,7 @@ public class PublishController {
         question.setTag(tag);
         question.setGmtCreate(System.currentTimeMillis());
         question.setGmt_modified(question.getGmtCreate());
-        question.setCreator(Integer.parseInt(foundUserByToken.getAccountId()));
+        question.setCreator(foundUserByToken.getAccountId());
         question.setUserId(foundUserByToken.getId());
 
         questionMapper.insertQuestion(question);

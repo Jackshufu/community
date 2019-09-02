@@ -13,8 +13,8 @@ public class User {
     private String accountId;
     private String name;
     private String token;
-    private Long gmt_create;
-    private Long gmt_modified;
+    private Long gmtCreate;
+    private Long gmtModified;
     private String avatarUrl;
 
     /*public String getAvatarUrl() {

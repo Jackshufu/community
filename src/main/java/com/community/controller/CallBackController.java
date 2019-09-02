@@ -5,6 +5,7 @@ import com.community.dto.GitHubUserDTO;
 import com.community.mapper.UserMapper;
 import com.community.model.User;
 import com.community.privider.GitHubPrivider;
+import com.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -37,6 +38,9 @@ public class CallBackController {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private UserService userService;
+
 
     /**
      * github回调我们注册App时填写的redirect-uri，并携带code
@@ -59,7 +63,7 @@ public class CallBackController {
         System.out.println("accessToken = " + accessToken);
         GitHubUserDTO gitHubUser = gitHubPrivider.getUser(accessToken);
         System.out.println("gitHubUser = " + gitHubUser.getId() + " " + gitHubUser.getName() + " " + gitHubUser.getBio() + gitHubUser.getAvatarUrl());
-        if (gitHubUser != null) {
+        if (gitHubUser != null && gitHubUser.getId() != null) {
             User user = new User();
             user.setAccountId(gitHubUser.getId().toString());
             user.setName(gitHubUser.getName());
@@ -67,10 +71,10 @@ public class CallBackController {
             user.setToken(token);
 //            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy-MM-dd hh:mm:ss");
 //            String format = simpleDateFormat.format(System.currentTimeMillis());
-            user.setGmt_create(System.currentTimeMillis());
-            user.setGmt_modified(user.getGmt_create());
+            user.setGmtCreate(System.currentTimeMillis());
+            user.setGmtModified(user.getGmtCreate());
             user.setAvatarUrl(gitHubUser.getAvatarUrl());
-            userMapper.insert(user);
+            userService.addOrUpdateUser(user);
 //            登陆成功，写cookie和session
 //            request.getSession().setAttribute("gitHubUser",gitHubUser);
             reaponse.addCookie(new Cookie("token", token));
@@ -80,5 +84,17 @@ public class CallBackController {
             return "redirect:index";
         }
 //        return "index";
+    }
+
+    @GetMapping("logout")
+    public String logout(HttpServletRequest request,
+                         HttpServletResponse response){
+//        退出服务端session，删除cookie
+        request.getSession().removeAttribute("userFindByToken");
+        Cookie token = new Cookie("token", "");
+        token.setMaxAge(0);
+        response.addCookie(token);
+
+        return "redirect:index";
     }
 }

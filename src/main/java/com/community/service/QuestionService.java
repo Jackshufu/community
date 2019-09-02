@@ -41,6 +41,7 @@ public class QuestionService {
         List<QuestionDTO> questions = questionDTOMapper.queryQuestionDTO();
         PageInfo<QuestionDTO> pageInfo = new PageInfo<>(questions);
         System.out.println("questions = " + questions);
+
 //        使用循环遍历，获取具体的question
         for (QuestionDTO question : questions) {
 //            questionDTO.setTitle(question.getTitle());
@@ -110,5 +111,15 @@ public class QuestionService {
 //        questionDTO.setTitle();
 
         return  pageInfo;
+    }
+
+    public QuestionDTO findQuestionById(Integer id) {
+        QuestionDTO question = questionDTOMapper.queryMyQuestionDTOById(id);
+        User user = userMapper.findUserById(question.getUserId());
+        QuestionDTO questionDTO = new QuestionDTO();
+        String creator = question.getCreator();
+        BeanUtils.copyProperties(question,questionDTO);
+        questionDTO.setUser(user);
+        return questionDTO;
     }
 }
