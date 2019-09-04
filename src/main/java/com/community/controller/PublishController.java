@@ -1,9 +1,6 @@
 package com.community.controller;
 
 import com.community.dto.QuestionDTO;
-import com.community.mapper.QuestionDTOMapper;
-import com.community.mapper.QuestionMapper;
-import com.community.mapper.UserMapper;
 import com.community.model.Question;
 import com.community.model.User;
 import com.community.service.QuestionService;
@@ -15,21 +12,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  * Created by 舒先亮 on 2019/8/23.
  */
 @Controller
 public class PublishController {
-    @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
-    private QuestionMapper questionMapper;
 
     @Autowired
     private QuestionService    questionService;

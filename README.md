@@ -381,6 +381,13 @@ ADD COLUMN `avatar_url` VARCHAR(100) NULL AFTER `gmt_modified`;
     
 # 问题二十四：退出登录
     1.删除cookie，退出服务端的session
+   
+# 编辑页面的传参
+```html
+    <input type="hidden" id="id" name = "id" th:value="${id}">
+```
+    这个传参的时候涉及PublishController的methoddoPublish获取值放到model中去，把这些属性set值，其中id的获取是在html中写上面代码获取的
+   注意 name = "id"很重要，不然后台获取不到id，则不能根据id去寻找question，则不能判断是新增还是修改
     
 
 # 问题
