@@ -2,6 +2,7 @@ package com.community.interceptor;
 
 import com.community.mapper.UserMapper;
 import com.community.model.User;
+import com.community.model.UserExample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -10,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * Created by 舒先亮 on 2019/9/1.
@@ -36,10 +38,13 @@ public class SessionInterceptor implements HandlerInterceptor {
                     String token = cookie.getValue();
                     System.out.println(" 数据库中找到和token相等的了 ");
 //                通过找到数据库中存的token，再通过它查找user的全部信息
-                    User userFindByToken = userMapper.findUserByToken(token);
-                    if (userFindByToken != null) {
+                    UserExample userExample = new UserExample();
+                    userExample.createCriteria()
+                            .andTokenEqualTo(token);
+                    List<User> users = userMapper.selectByExample(userExample);
+                    if (users.size() != 0) {
 
-                        request.getSession().setAttribute("userFindByToken", userFindByToken);
+                        request.getSession().setAttribute("userFindByToken", users.get(0));
                     }
                     break;
                 }

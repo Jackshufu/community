@@ -6,6 +6,7 @@ import com.community.mapper.QuestionMapper;
 import com.community.mapper.UserMapper;
 import com.community.model.Question;
 import com.community.model.User;
+import com.community.model.UserExample;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
@@ -48,7 +49,11 @@ public class QuestionService {
 //            questionDTO.setDescription(question.getDescription());
 //            questionDTO.setTag(question.getTag());
 //            通过每个question的creator获取user
-            User user = userMapper.findUserById(question.getUserId());
+            UserExample userExample = new UserExample();
+            userExample.createCriteria()
+                    .andIdEqualTo(question.getUserId());
+            List<User> users = userMapper.selectByExample(userExample);
+            User user = users.get(0);
             System.out.println("user = " + user);
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question,questionDTO);
@@ -97,7 +102,11 @@ public class QuestionService {
 //            questionDTO.setDescription(question.getDescription());
 //            questionDTO.setTag(question.getTag());
 //            通过每个question的creator获取user
-            User user = userMapper.findUserById(question.getUserId());
+            UserExample userEexample = new UserExample();
+            userEexample.createCriteria()
+                    .andIdEqualTo(question.getUserId());
+            List<User> users = userMapper.selectByExample(userEexample);
+            User user = users.get(0);
             System.out.println("user = " + user);
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question,questionDTO);
@@ -115,7 +124,11 @@ public class QuestionService {
 
     public QuestionDTO findQuestionById(Integer id) {
         QuestionDTO question = questionDTOMapper.queryMyQuestionDTOById(id);
-        User user = userMapper.findUserById(question.getUserId());
+        UserExample userExample = new UserExample();
+        userExample.createCriteria()
+                .andIdEqualTo(question.getUserId());
+        List<User> users = userMapper.selectByExample(userExample);
+        User user = users.get(0);
         QuestionDTO questionDTO = new QuestionDTO();
         String creator = question.getCreator();
         BeanUtils.copyProperties(question,questionDTO);

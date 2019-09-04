@@ -2,21 +2,18 @@ package com.community.controller;
 
 import com.community.dto.AccessTokenDTO;
 import com.community.dto.GitHubUserDTO;
-import com.community.mapper.UserMapper;
 import com.community.model.User;
 import com.community.privider.GitHubPrivider;
 import com.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.text.SimpleDateFormat;
 import java.util.UUID;
 
 /**
@@ -35,8 +32,6 @@ public class CallBackController {
     @Value("${github.redirect.uri}")
     private String redirectUri;
 
-    @Autowired
-    private UserMapper userMapper;
 
     @Autowired
     private UserService userService;
