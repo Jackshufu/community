@@ -381,6 +381,7 @@ ADD COLUMN `avatar_url` VARCHAR(100) NULL AFTER `gmt_modified`;
     
 # 问题二十四：退出登录
     1.删除cookie，退出服务端的session
+    
 
 # 问题
     这个项目是什么类型的软件，目标用户是什么群体，我负责哪些模块，这些说完，要有突出的亮点

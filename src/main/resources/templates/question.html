@@ -30,7 +30,7 @@
             <hr>
             <span th:text="${question.description}"></span>
             <hr>
-            <a href="/publish" th:if="${session.userFindByToken != null && session.userFindByToken.accountId == question.creator}">
+            <a th:href="'/publish/'+${question.id}" th:if="${session.userFindByToken != null && session.userFindByToken.accountId == question.creator}">
                 <span class="glyphicon glyphicon-pencil">编辑</span>
             </a>
 
