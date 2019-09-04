@@ -47,7 +47,7 @@ public class PublishController {
             @RequestParam(value = "title", required = false) String title,
             @RequestParam(value = "description", required = false) String description,
             @RequestParam(value = "tag", required = false) String tag,
-            @RequestParam(value = "id", required = false) String id,
+            @RequestParam(value = "id", required = false) Integer id,
             Model model,
             HttpServletRequest request) {
         /**
@@ -56,7 +56,6 @@ public class PublishController {
         model.addAttribute("title", title);
         model.addAttribute("description", description);
         model.addAttribute("tag", tag);
-        model.addAttribute("id", id);
 
         /**
          * 判断前端的三个参数的值是否为空，为空则报错，并返回发布问题页面
@@ -95,8 +94,9 @@ public class PublishController {
         question.setGmt_modified(question.getGmtCreate());
         question.setCreator(foundUserByToken.getAccountId());
         question.setUserId(foundUserByToken.getId());
+        question.setId(id);
 
-        questionMapper.insertQuestion(question);
+        questionService.createOrUpdateQuestion(question);
         return "publish";
     }
 
@@ -107,6 +107,7 @@ public class PublishController {
         model.addAttribute("title", question.getTitle());
         model.addAttribute("description", question.getDescription());
         model.addAttribute("tag", question.getTag());
+        model.addAttribute("id", question.getId());
         return "publish";
     }
 }

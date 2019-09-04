@@ -2,6 +2,7 @@ package com.community.mapper;
 
 import com.community.dto.QuestionDTO;
 import com.community.model.Question;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -22,4 +23,7 @@ public interface QuestionDTOMapper {
 
     @Select("select * from question where id = #{id}")
     QuestionDTO queryMyQuestionDTOById(Integer id);
+
+    @Insert("insert into question (title,description,gmt_create,gmt_modified,creator,user_id,tag) values (#{title},#{description},#{gmtCreate},#{gmt_modified},#{creator},#{userId},#{tag})")
+    void insertQuestionDTO(Question newQuestion);
 }
