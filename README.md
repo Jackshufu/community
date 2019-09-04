@@ -388,7 +388,15 @@ ADD COLUMN `avatar_url` VARCHAR(100) NULL AFTER `gmt_modified`;
 ```
     这个传参的时候涉及PublishController的methoddoPublish获取值放到model中去，把这些属性set值，其中id的获取是在html中写上面代码获取的
    注意 name = "id"很重要，不然后台获取不到id，则不能根据id去寻找question，则不能判断是新增还是修改
+   
+# 问题二十五：集成Mybatis Generator
+    Mybatis Generator寻求的主要影响是数据库增删改查这些简单的操作，例如join查询和存储过程的SQL代码和对象还需要自己编写
+    Mapper中给参数加注解用@Param(value = "传入参数的形参名")
     
+    1.在添加generatorConfig.xml的时候报红http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd，发现没有引入maven插件、依赖
+    报错：URI is not registered (Settings | Languages & Frameworks | Schemas and DTD
+    统一资源定位符没有注册
+    操作：file-->settings...-->languages & frameworks --> Schemas and DTDs,进去添加注册一下就OK了    
 
 # 问题
     这个项目是什么类型的软件，目标用户是什么群体，我负责哪些模块，这些说完，要有突出的亮点
