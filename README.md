@@ -396,7 +396,9 @@ ADD COLUMN `avatar_url` VARCHAR(100) NULL AFTER `gmt_modified`;
     1.在添加generatorConfig.xml的时候报红http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd，发现没有引入maven插件、依赖
     报错：URI is not registered (Settings | Languages & Frameworks | Schemas and DTD
     统一资源定位符没有注册
-    操作：file-->settings...-->languages & frameworks --> Schemas and DTDs,进去添加注册一下就OK了    
+    操作：file-->settings...-->languages & frameworks --> Schemas and DTDs,进去添加注册一下就OK了 
+       生成mapper文件和对应的Model等命令：
+       mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
 
 # 问题
     这个项目是什么类型的软件，目标用户是什么群体，我负责哪些模块，这些说完，要有突出的亮点

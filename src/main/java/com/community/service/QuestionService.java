@@ -5,6 +5,7 @@ import com.community.mapper.QuestionDTOMapper;
 import com.community.mapper.QuestionMapper;
 import com.community.mapper.UserMapper;
 import com.community.model.Question;
+import com.community.model.QuestionExample;
 import com.community.model.User;
 import com.community.model.UserExample;
 import com.github.pagehelper.PageHelper;
@@ -71,7 +72,11 @@ public class QuestionService {
 
     public List<QuestionDTO> findList1() {
 //        查出所有的question数据，放在list集合里面
-        List<Question> questions = questionMapper.queryQuestion();
+
+        QuestionExample questionExample = new QuestionExample();
+        questionExample.createCriteria()
+                .andIdIsNotNull();
+        List<Question> questions = questionMapper.selectByExample(questionExample);
         List<QuestionDTO> questionDTOList = new ArrayList<>();
         System.out.println("questions = " + questions);
 //        使用循环遍历，获取具体的question
@@ -140,12 +145,20 @@ public class QuestionService {
         if(question.getId() == null){
 //            Question newQuestion = new Question();
             question.setGmtCreate(System.currentTimeMillis());
-            question.setGmt_modified(question.getGmtCreate());
+            question.setGmtModified(question.getGmtCreate());
             questionDTOMapper.insertQuestionDTO(question);
         }else{
             System.out.println("我要更新问题 = " );
-            question.setGmt_modified(System.currentTimeMillis());
-            questionMapper.updateQuestion(question);
+
+            Question updateQuestion = new Question();
+            updateQuestion.setGmtModified(System.currentTimeMillis());
+            updateQuestion.setTitle(question.getTitle());
+            updateQuestion.setDescription(question.getDescription());
+            updateQuestion.setTag(question.getTag());
+            QuestionExample questionExample = new QuestionExample();
+            questionExample.createCriteria()
+                    .andIdEqualTo(question.getId());
+            questionMapper.updateByExampleSelective(updateQuestion, questionExample);
         }
 
     }

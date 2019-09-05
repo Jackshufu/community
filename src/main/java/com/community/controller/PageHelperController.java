@@ -4,6 +4,7 @@ import com.community.dto.QuestionDTO;
 import com.community.mapper.QuestionMapper;
 import com.community.mapper.UserMapper;
 import com.community.model.Question;
+import com.community.model.QuestionExample;
 import com.community.model.User;
 import com.community.service.QuestionService;
 import com.github.pagehelper.PageHelper;
@@ -56,7 +57,10 @@ public class PageHelperController {
 //        2引入分页插件，pageNum为第几页，pageSize为分页展示页面总数，count为查询总数
         PageHelper.startPage(pageNum, pageSize);
         try {
-            List<Question> questions = questionMapper.queryQuestion();
+            QuestionExample questionExample = new QuestionExample();
+            questionExample.createCriteria()
+                    .andIdIsNotNull();
+            List<Question> questions = questionMapper.selectByExample(questionExample);
             model.addAttribute("questions", questions);
             System.out.println("questions = " + questions);
 
