@@ -415,6 +415,59 @@ ADD COLUMN `avatar_url` VARCHAR(100) NULL AFTER `gmt_modified`;
     
 # 问题二十七：使用枚举列出所有异常
     1.涉及改动的类有CustomErrorCodeEnum、CustomErrorCodeEnumImp、CustomException、QuestionService(修改抛出异常)
+    2.处理在8080端口后随便输入参数的情况：报错No message available
+    在IDEA按住Ctrl+Shift+F查找抛出异常在什么地方功能名称Find in path
+    
+    3.如何处理诸如输入错误抛出来的No message available异常呢？
+        3.1 这个异常，我们了解到它是源码内部提供的，我们可以 以实现ErrorController来处理这种异常
+        3.2 BasicErrorController中BasicErrorController就是在ErrorMvcAutoConfiguration中实现的，里面的errorHtml方法就是实现处理异常的
+        方法，发现方法中需要使用getStatus方法，粘贴到自己的ErrorController方法中去
+        3.3 将getStatus方法中的protected改成private;
+   代码：
+```java
+        @RequestMapping(produces = MediaType.TEXT_HTML_VALUE)
+            public ModelAndView errorHtml(HttpServletRequest request, HttpServletResponse response) {
+                HttpStatus status = getStatus(request);
+                Map<String, Object> model = Collections
+                        .unmodifiableMap(getErrorAttributes(request, isIncludeStackTrace(request, MediaType.TEXT_HTML)));
+                response.setStatus(status.value());
+                ModelAndView modelAndView = resolveErrorView(request, response, status, model);
+                return (modelAndView != null) ? modelAndView : new ModelAndView("error", model);
+            }
+
+```
+    删除后：
+```java
+        @RequestMapping(produces = MediaType.TEXT_HTML_VALUE)
+        public ModelAndView errorHtml(HttpServletRequest request, HttpServletResponse response) {
+            HttpStatus status = getStatus(request);
+            
+            return (modelAndView != null) ? modelAndView : new ModelAndView("error", model);
+        }
+        
+ //getStatus方法中的代码如下
+        private HttpStatus getStatus(HttpServletRequest request) {
+        Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
+        if (statusCode == null) {
+            return HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        try {
+            return HttpStatus.valueOf(statusCode);
+        }
+        catch (Exception ex) {
+            return HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+    }
+```
+通用的处理异常我们可以实现自定义的ErrorController来处理异常，同时通过ControllerAdvice配合ExceptionHandler去处理上下文中的业务
+异常的透传。但是要注意这个异常要继承RuntimeException，这样不会影响我们其他的代码，只需要在CustomExceptionHandler去拦截就好了，
+但是这个拦截，他拦截的是所有我们SpringMVC可以handler的异常；不能handler包括404我们应该怎么办呢，我们需要做一个通用的Controller->
+CustomErrorController去处理，当没有拦截住呢，4xx的请求我们需要告诉你：你没有拦截住，直接失误了，根本没有路由到任何mapper中去
+所以根本不会去ControllerAdvice中去
+    
+    
+    
+    
     
     
     
