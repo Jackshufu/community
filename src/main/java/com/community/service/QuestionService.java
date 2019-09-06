@@ -1,6 +1,7 @@
 package com.community.service;
 
 import com.community.dto.QuestionDTO;
+import com.community.exception.CustomException;
 import com.community.mapper.QuestionDTOMapper;
 import com.community.mapper.QuestionMapper;
 import com.community.mapper.UserMapper;
@@ -129,6 +130,9 @@ public class QuestionService {
 
     public QuestionDTO findQuestionById(Integer id) {
         QuestionDTO question = questionDTOMapper.queryMyQuestionDTOById(id);
+        if(question == null){
+            throw new CustomException("查询的问题不存在");
+        }
         UserExample userExample = new UserExample();
         userExample.createCriteria()
                 .andIdEqualTo(question.getUserId());

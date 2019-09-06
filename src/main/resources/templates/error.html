@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>亮亮社区</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <!--三个资源文件的引入-->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/community.css">
+    <!--<script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>-->
+    <script src="/js/jquery-3.4.1.min.js"></script>
+    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+
+</head>
+
+<body class="bodyColor">
+<div th:insert="~{navigation :: nav}"></div>
+<div class="error">
+    <div class="row ">
+        <div class="jumbotron">
+            <h1>出错啦！！！</h1>
+            <p th:text="${message}">服务器冒烟了，要不等会再试试~</p>
+            <p><a class="btn btn-primary btn-lg" href="#" role="button">返回主页</a></p>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

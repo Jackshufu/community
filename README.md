@@ -399,6 +399,28 @@ ADD COLUMN `avatar_url` VARCHAR(100) NULL AFTER `gmt_modified`;
     操作：file-->settings...-->languages & frameworks --> Schemas and DTDs,进去添加注册一下就OK了 
        生成mapper文件和对应的Model等命令：
        mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
+    2.章节34分页查询使用了MyBatisGenerator中的插件RowBounds
+# 问题二十六: 增加页面友好度p35  
+    将报错做的更可视化一些，友好一些，把错误都包裹起来
+    处理Whitelabel Error page：
+        找springboot的官方文档：
+[springboot的官方文档"Error Handling"](https://docs.spring.io/spring-boot/docs/2.1.7.RELEASE/reference/html/boot-features-developing-web-applications.html#boot-features-error-handling)
+    1.先创建一个error.html页面;th:text="${message}"可将后台错误信息传值到前端去
+    2.当创建一个advice的时候，再次debug的时候，就会发现页面并不会返回报错信息了，这个时候我们就需要通过Model把错误信息传值给前端
+    3.在debug调试的过程中，我们发现导致查不到问题的原因是我们查到的缺少婷婷为空，那么怎么样才能将空这个原因传到前端呢，而不是通通
+    报错服务端error，这个时候我们就需要自定义异常；
+    4.自定义异常继承RuntimeException原因：在抛出异常的时候我不想在当前层try catch,只需要在ControllerAdvice进行处理try catch即可
+    5.自定义异常后，在每一个可能抛出异常的地方 throw new XXXException("Exception description"),然后在ControllerAdvice中判断如果
+    异常对象 instance XXXException,则将ex.getMessage()传给前端
+    
+    
+    
+    
+    
+    
+    
+           
+    
 
 # 问题
     这个项目是什么类型的软件，目标用户是什么群体，我负责哪些模块，这些说完，要有突出的亮点
