@@ -6,6 +6,11 @@ package com.community.exception;
 public class CustomException extends RuntimeException {
     private String message;
 
+    public CustomException(CustomErrorCodeEnumImp errorCode) {
+
+        this.message = errorCode.getMessage();
+    }
+
     public CustomException(String message) {
 //        super(message);
         this.message = message;

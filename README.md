@@ -413,6 +413,9 @@ ADD COLUMN `avatar_url` VARCHAR(100) NULL AFTER `gmt_modified`;
     5.自定义异常后，在每一个可能抛出异常的地方 throw new XXXException("Exception description"),然后在ControllerAdvice中判断如果
     异常对象 instance XXXException,则将ex.getMessage()传给前端
     
+# 问题二十七：使用枚举列出所有异常
+    1.涉及改动的类有CustomErrorCodeEnum、CustomErrorCodeEnumImp、CustomException、QuestionService(修改抛出异常)
+    
     
     
     
