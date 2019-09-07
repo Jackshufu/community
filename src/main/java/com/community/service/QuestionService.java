@@ -59,7 +59,7 @@ public class QuestionService {
             User user = users.get(0);
             System.out.println("user = " + user);
             QuestionDTO questionDTO = new QuestionDTO();
-            BeanUtils.copyProperties(question,questionDTO);
+            BeanUtils.copyProperties(question, questionDTO);
             questionDTO.setUser(user);
             questionDTOList.add(questionDTO);
         }
@@ -69,7 +69,7 @@ public class QuestionService {
 
 //        questionDTO.setTitle();
 
-        return  pageInfo;
+        return pageInfo;
     }
 
     public List<QuestionDTO> findList1() {
@@ -84,7 +84,7 @@ public class QuestionService {
 //        使用循环遍历，获取具体的question
         for (Question question : questions) {
             QuestionDTO questionDTO = new QuestionDTO();
-            BeanUtils.copyProperties(question,questionDTO);
+            BeanUtils.copyProperties(question, questionDTO);
             questionDTOList.add(questionDTO);
         }
 
@@ -93,10 +93,10 @@ public class QuestionService {
 
 //        questionDTO.setTitle();
 
-        return  questionDTOList;
+        return questionDTOList;
     }
 
-    public PageInfo<QuestionDTO> findMyList(Integer pageNum, Integer pageSize,String accountId) {
+    public PageInfo<QuestionDTO> findMyList(Integer pageNum, Integer pageSize, String accountId) {
         //        查出所有的question数据，放在list集合里面
         List<QuestionDTO> questionDTOList = new ArrayList<>();
         PageHelper.startPage(pageNum, pageSize);
@@ -116,7 +116,7 @@ public class QuestionService {
             User user = users.get(0);
             System.out.println("user = " + user);
             QuestionDTO questionDTO = new QuestionDTO();
-            BeanUtils.copyProperties(question,questionDTO);
+            BeanUtils.copyProperties(question, questionDTO);
             questionDTO.setUser(user);
             questionDTOList.add(questionDTO);
         }
@@ -126,12 +126,12 @@ public class QuestionService {
 
 //        questionDTO.setTitle();
 
-        return  pageInfo;
+        return pageInfo;
     }
 
     public QuestionDTO findQuestionById(Integer id) {
         QuestionDTO question = questionDTOMapper.queryMyQuestionDTOById(id);
-        if(question == null){
+        if (question == null) {
             throw new CustomException(CustomErrorCodeEnumImp.QUESTION_NOT_FOUND);
         }
         UserExample userExample = new UserExample();
@@ -141,19 +141,19 @@ public class QuestionService {
         User user = users.get(0);
         QuestionDTO questionDTO = new QuestionDTO();
         String creator = question.getCreator();
-        BeanUtils.copyProperties(question,questionDTO);
+        BeanUtils.copyProperties(question, questionDTO);
         questionDTO.setUser(user);
         return questionDTO;
     }
 
     public void createOrUpdateQuestion(Question question) {
-        if(question.getId() == null){
+        if (question.getId() == null) {
 //            Question newQuestion = new Question();
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
             questionDTOMapper.insertQuestionDTO(question);
-        }else{
-            System.out.println("我要更新问题 = " );
+        } else {
+            System.out.println("我要更新问题 = ");
 
             Question updateQuestion = new Question();
             updateQuestion.setGmtModified(System.currentTimeMillis());
@@ -164,10 +164,31 @@ public class QuestionService {
             questionExample.createCriteria()
                     .andIdEqualTo(question.getId());
             int codeStatus = questionMapper.updateByExampleSelective(updateQuestion, questionExample);
-            if(codeStatus == 0){
+            if (codeStatus == 0) {
                 throw new CustomException(CustomErrorCodeEnumImp.UPDATE_QUESTION_NOT_FOUND);
             }
         }
+
+    }
+
+    public void addViewCount(Integer id) {
+//        查出来当前question的viewCount是多少
+        QuestionExample questionExample = new QuestionExample();
+        questionExample.createCriteria()
+                .andIdEqualTo(id);
+        List<Question> questions = questionMapper.selectByExample(questionExample);
+
+        Question updateQuestion = new Question();
+        Integer viewCount = questions.get(0).getViewCount();
+//        int i = viewCount + 1;
+//
+//        System.out.println("i = " + i);
+        updateQuestion.setViewCount(viewCount +1);
+
+        QuestionExample questionExample1 = new QuestionExample();
+        questionExample1.createCriteria()
+                .andIdEqualTo(questions.get(0).getId());
+        questionMapper.updateByExampleSelective(updateQuestion, questionExample1);
 
     }
 }
