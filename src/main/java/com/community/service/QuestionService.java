@@ -4,6 +4,7 @@ import com.community.dto.QuestionDTO;
 import com.community.exception.CustomErrorCodeEnumImp;
 import com.community.exception.CustomException;
 import com.community.mapper.QuestionDTOMapper;
+import com.community.mapper.QuestionExtMapper;
 import com.community.mapper.QuestionMapper;
 import com.community.mapper.UserMapper;
 import com.community.model.Question;
@@ -34,8 +35,8 @@ public class QuestionService {
     @Autowired
     private QuestionDTOMapper questionDTOMapper;
 
-//    @Autowired
-//    private QuestionDTO questionDTO;
+    @Autowired
+    private QuestionExtMapper questionExtMapper;
 
 
     public PageInfo<QuestionDTO> findList(Integer pageNum, Integer pageSize) {
@@ -172,7 +173,7 @@ public class QuestionService {
     }
 
     public void addViewCount(Integer id) {
-//        查出来当前question的viewCount是多少
+/*//        查出来当前question的viewCount是多少
         QuestionExample questionExample = new QuestionExample();
         questionExample.createCriteria()
                 .andIdEqualTo(id);
@@ -188,7 +189,12 @@ public class QuestionService {
         QuestionExample questionExample1 = new QuestionExample();
         questionExample1.createCriteria()
                 .andIdEqualTo(questions.get(0).getId());
-        questionMapper.updateByExampleSelective(updateQuestion, questionExample1);
+        questionMapper.updateByExampleSelective(updateQuestion, questionExample1);*/
+//        *********************第二种方式************************************
+        Question question = new Question();
+        question.setId(id);
+        question.setViewCount(1);
+        questionExtMapper.incView(question);
 
     }
 }

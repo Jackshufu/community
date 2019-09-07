@@ -31,7 +31,7 @@ public class CustomErrorController implements ErrorController {
             model.addAttribute("message", "客户端请求出错啦");
         }
         if (status.is5xxServerError()) {
-            model.addAttribute("message", "服务冒烟了，要不然你稍后再试试");
+            model.addAttribute("message", "服务冒烟了，要不然你稍后再试试~~");
         }
         return new ModelAndView("error");
     }
