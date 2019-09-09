@@ -80,6 +80,7 @@
 
 ## 工具
    [visual-paradigm（画UML图工具）](https://www.visual-paradigm.com/cn/)
+   [json在线解析工具](https://jsoneditoronline.org)
    
 # 第七步：申请github的APP，用于github授权APP登录
         进入github->settings->Developer settings->New Github App
@@ -400,6 +401,11 @@ ADD COLUMN `avatar_url` VARCHAR(100) NULL AFTER `gmt_modified`;
        生成mapper文件和对应的Model等命令：
        mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
     2.章节34分页查询使用了MyBatisGenerator中的插件RowBounds
+    3.我的MybatisGenerator不能生成诸如selectByPrimaryKey这样的工具，在标签jdbcConnection中添加如下代码段就生成了
+```xml
+    <property  name = "useInformationSchema" value = "true" />
+```
+
 # 问题二十六: 增加页面友好度p35  
     将报错做的更可视化一些，友好一些，把错误都包裹起来
     处理Whitelabel Error page：
@@ -482,6 +488,42 @@ CustomErrorController去处理，当没有拦截住呢，4xx的请求我们需�
     在此值的基础上加1，会丢失很多数据，因此，我们需要使用数据库自己的viewCount+1来表示查询到的viewCount
     3.实现这个功能，自己扩展mapper.xml，因为自动生成的mapper.xml，在每次改变表的时候会被覆盖，所以自己扩展一个，mapper.xml
     
+# 添加评论功能
+1. ajax局部刷新，使用异步处理方式把请求发到服务器端，得到响应之后直接处理
+2. 查看FormDate->post_hash
+3. 流程：
+    + 进入问题提问的时候，提问的下方加载出来最新的所有的回复，可以按票数回复，时间倒序回复，我们实现的是时间倒序回复，
+    + 同时下面有输入框，可以提交问题，点击回复的时候，异步调用服务器的请求，请求成功以后局部刷新，把内容追加上来，并且修改回复数
+    + 前后端交互的接口是怎么实现的：
+        * 设计表，先加载列表页面，再加载列表页面里面的子评论
+        * 前端传过来请求的时候，我们要拿到一个json，服务端拿到这个json之后，反序列化成自己的对象，再做操作，然后回给前端也是返回一个java的
+        object，让spring把object转换成json
+        * 我们可以直接拿到一个自动封装成CommentDTO的请求体RequestBody,在controller中如下使用RequestBody：
+        * 报错：template might not exist or might not be accessible by any of the configured Template Resolvers
+            * 加注解：@ResponseBody ,指定返回的格式是一个json格式
+```java
+        public Object postComment(@RequestBody CommentDTO commentDTO){
+
+             return false;
+        }
+```
+        
+## 建表语句
+```mysql
+  CREATE TABLE `community`.`comment` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `parent_id` BIGINT NOT NULL COMMENT '指向问题的id，父类id',
+  `type` INT NULL COMMENT '父类类型，type可以定义为枚举类，1的时候做什么事情，2的时候做什么事情',
+  `commentator` INT NULL COMMENT '评论人id',
+  `content` VARCHAR(1024) NULL,
+  `gmt_create` BIGINT NOT NULL COMMENT '创建时间',
+  `gmt_modified` BIGINT NOT NULL,
+  `like_count` BIGINT NULL DEFAULT 0,
+  PRIMARY KEY (`id`));
+```
+
+# 什么是json？
+   + 它是一种网络传输数据结构：不同语言之间传递对象，约定俗成这么个语言json来传递
     
     
     

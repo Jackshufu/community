@@ -11,6 +11,7 @@
                         connectionURL="${spring.datasource.url}"
                         userId="root"
                         password="root">
+            <property name="useInformationSchema" value="true"/>
         </jdbcConnection>
 
         <javaTypeResolver>
@@ -34,6 +35,9 @@
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
         <table tableName="question">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="comment">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
