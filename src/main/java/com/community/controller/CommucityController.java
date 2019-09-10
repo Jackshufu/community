@@ -23,9 +23,6 @@ import java.util.List;
 public class CommucityController {
 
     @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
     private QuestionService questionService;
 
     @GetMapping("/index")

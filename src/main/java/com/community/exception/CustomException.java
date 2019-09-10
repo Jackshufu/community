@@ -5,19 +5,19 @@ package com.community.exception;
  */
 public class CustomException extends RuntimeException {
     private String message;
+    private Integer code;
 
     public CustomException(CustomErrorCodeEnumImp errorCode) {
-
+        this.code = errorCode.getCode();
         this.message = errorCode.getMessage();
-    }
-
-    public CustomException(String message) {
-//        super(message);
-        this.message = message;
     }
 
     @Override
     public String getMessage() {
         return message;
+    }
+
+    public Integer getCode() {
+        return code;
     }
 }

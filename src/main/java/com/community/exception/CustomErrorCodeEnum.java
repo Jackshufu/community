@@ -5,4 +5,5 @@ package com.community.exception;
  */
 public interface CustomErrorCodeEnum {
      String getMessage();
+     Integer getCode();
 }

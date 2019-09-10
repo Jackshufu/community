@@ -81,6 +81,7 @@
 ## 工具
    [visual-paradigm（画UML图工具）](https://www.visual-paradigm.com/cn/)
    [json在线解析工具](https://jsoneditoronline.org)
+   [Postman](https://chrome.google.com/webstore/detail/tabbed-postman-rest-clien/coohjcphdfgbiolnekdpbcijmhambjff)
    
 # 第七步：申请github的APP，用于github授权APP登录
         进入github->settings->Developer settings->New Github App
@@ -104,6 +105,7 @@
     此时可以更新登录状态，把获取到的user信息保存到数据库，最后返回用户登录成功
 
 # 步骤八：添加fastjson依赖
+[2019009看到说fastJson出现漏洞，最好修复到1.2.60版本](https://mp.weixin.qq.com/s/yVzZTTR5R6QbspTg5WI5hg)
 ```xml
     <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
     <dependency>
@@ -488,7 +490,7 @@ CustomErrorController去处理，当没有拦截住呢，4xx的请求我们需�
     在此值的基础上加1，会丢失很多数据，因此，我们需要使用数据库自己的viewCount+1来表示查询到的viewCount
     3.实现这个功能，自己扩展mapper.xml，因为自动生成的mapper.xml，在每次改变表的时候会被覆盖，所以自己扩展一个，mapper.xml
     
-# 添加评论功能
+# 问题二十九：添加评论功能
 1. ajax局部刷新，使用异步处理方式把请求发到服务器端，得到响应之后直接处理
 2. 查看FormDate->post_hash
 3. 流程：
@@ -498,7 +500,8 @@ CustomErrorController去处理，当没有拦截住呢，4xx的请求我们需�
         * 设计表，先加载列表页面，再加载列表页面里面的子评论
         * 前端传过来请求的时候，我们要拿到一个json，服务端拿到这个json之后，反序列化成自己的对象，再做操作，然后回给前端也是返回一个java的
         object，让spring把object转换成json
-        * 我们可以直接拿到一个自动封装成CommentDTO的请求体RequestBody,在controller中如下使用RequestBody：
+        * 我们可以直接拿到一个自动封装成CommentDTO的请求体RequestBody,在controller中如下使用RequestBody，对前端传过来的json数据
+        进行反序列化，序列化成CommentDTO对象：
         * 报错：template might not exist or might not be accessible by any of the configured Template Resolvers
             * 加注解：@ResponseBody ,指定返回的格式是一个json格式
 ```java
@@ -507,7 +510,126 @@ CustomErrorController去处理，当没有拦截住呢，4xx的请求我们需�
              return false;
         }
 ```
+
+# 问题三十： 关于评论模块的异常处理
+1. 直观的我们可以在添加了评论之后，将处理成功的状态放在hashMap中返回给前台一个json格式的状态
+```java
+        package com.community.controller;
+
+        import com.community.dto.CommentDTO;
+        import com.community.mapper.CommentMapper;
+        import com.community.model.Comment;
+        import org.springframework.beans.factory.annotation.Autowired;
+        import org.springframework.stereotype.Controller;
+        import org.springframework.web.bind.annotation.*;
         
+        import java.util.HashMap;
+        
+        /**
+         * Created by 舒先亮 on 2019/9/9.
+         */
+        @Controller
+        public class CommentController {
+        
+            @Autowired
+            private CommentMapper commentMapper;
+        
+            @ResponseBody
+            @RequestMapping(value = "/comment",method = RequestMethod.POST)
+            public Object postComment(@RequestBody CommentDTO commentDTO){
+                Comment comment = new Comment();
+                comment.setParentId(commentDTO.getParentId());
+                comment.setContent(commentDTO.getContent());
+                comment.setType(commentDTO.getType());
+                comment.setGmtCreate(System.currentTimeMillis());
+                comment.setGmtModified(comment.getGmtCreate());
+                comment.setCommentator(1);
+                comment.setLikeCount(0L);
+                commentMapper.insert(comment);
+                HashMap<Object, Object> objectObjectHashMap = new HashMap<>();
+                objectObjectHashMap.put("message", "成功");
+                return objectObjectHashMap;
+            }
+        }
+
+```
+2. 我们自己定义一个返回状态结果的DTO
+```java
+        package com.community.dto;
+
+        import lombok.Data;
+        
+        /**
+         * Created by 舒先亮 on 2019/9/9.
+         */
+        @Data
+        public class ResultDTO {
+        //    code是像code码一样，用来告诉前端当前是此状态码的状态
+            private Integer code;
+        //    message是用来提示的
+            private String message;
+        
+            public static ResultDTO errorOf(Integer code,String message){
+                ResultDTO resultDTO = new ResultDTO();
+                resultDTO.setCode(code);
+                resultDTO.setMessage(message);
+                return resultDTO;
+        
+            }
+        
+        }
+```
+3. CommentController中添加判断用户是否存在的判断，如果用户不存在则用ResultDTO进行判断
+```java
+            package com.community.controller;
+            
+            import com.community.dto.CommentDTO;
+            import com.community.dto.ResultDTO;
+            import com.community.mapper.CommentMapper;
+            import com.community.model.Comment;
+            import com.community.model.User;
+            import org.springframework.beans.factory.annotation.Autowired;
+            import org.springframework.stereotype.Controller;
+            import org.springframework.web.bind.annotation.*;
+            
+            import javax.servlet.http.HttpServletRequest;
+            import java.util.HashMap;
+            
+            /**
+             * Created by 舒先亮 on 2019/9/9.
+             */
+            @Controller
+            public class CommentController {
+            
+                @Autowired
+                private CommentMapper commentMapper;
+            
+                @ResponseBody
+                @RequestMapping(value = "/comment",method = RequestMethod.POST)
+                public Object postComment(@RequestBody CommentDTO commentDTO,
+                                          HttpServletRequest request){
+            
+                    User user = (User) request.getSession().getAttribute("userFindByToken");
+                    if(user == null){
+                        return ResultDTO.errorOf(2002, "当前用户未登录，不能进行评论，请先登录");
+                    }
+                    Comment comment = new Comment();
+                    comment.setParentId(commentDTO.getParentId());
+                    comment.setContent(commentDTO.getContent());
+                    comment.setType(commentDTO.getType());
+                    comment.setGmtCreate(System.currentTimeMillis());
+                    comment.setGmtModified(comment.getGmtCreate());
+                    comment.setCommentator(user.getId());
+                    comment.setLikeCount(0L);
+                    commentMapper.insert(comment);
+                    HashMap<Object, Object> objectObjectHashMap = new HashMap<>();
+                    objectObjectHashMap.put("message", "成功");
+                    return objectObjectHashMap;
+                }
+            }
+```
+4. 以2开头的，都是系统级的异常；
+
 ## 建表语句
 ```mysql
   CREATE TABLE `community`.`comment` (

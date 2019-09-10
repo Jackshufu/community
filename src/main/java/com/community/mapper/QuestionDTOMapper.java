@@ -22,7 +22,7 @@ public interface QuestionDTOMapper {
 
 
     @Select("select * from question where id = #{id}")
-    QuestionDTO queryMyQuestionDTOById(Integer id);
+    QuestionDTO queryMyQuestionDTOById(Long id);
 
     @Insert("insert into question (title,description,gmt_create,gmt_modified,creator,user_id,tag) values (#{title},#{description},#{gmtCreate},#{gmtModified},#{creator},#{userId},#{tag})")
     void insertQuestionDTO(Question newQuestion);

@@ -130,7 +130,7 @@ public class QuestionService {
         return pageInfo;
     }
 
-    public QuestionDTO findQuestionById(Integer id) {
+    public QuestionDTO findQuestionById(Long id) {
         QuestionDTO question = questionDTOMapper.queryMyQuestionDTOById(id);
         if (question == null) {
             throw new CustomException(CustomErrorCodeEnumImp.QUESTION_NOT_FOUND);
@@ -149,9 +149,13 @@ public class QuestionService {
 
     public void createOrUpdateQuestion(Question question) {
         if (question.getId() == null) {
-//            Question newQuestion = new Question();
+//            创建问题
+// Question newQuestion = new Question();
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
+            question.setViewCount(0);
+            question.setCommentCount(0);
+            question.setLikeCount(0);
             questionDTOMapper.insertQuestionDTO(question);
         } else {
             System.out.println("我要更新问题 = ");
@@ -172,7 +176,7 @@ public class QuestionService {
 
     }
 
-    public void addViewCount(Integer id) {
+    public void addViewCount(Long id) {
 /*//        查出来当前question的viewCount是多少
         QuestionExample questionExample = new QuestionExample();
         questionExample.createCriteria()
