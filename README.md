@@ -647,8 +647,40 @@ CustomErrorController去处理，当没有拦截住呢，4xx的请求我们需�
 # 什么是json？
    + 它是一种网络传输数据结构：不同语言之间传递对象，约定俗成这么个语言json来传递
     
-    
-    
+# 问题三十一：实现回复功能-添加事务
+1. 当从页面提交过来一个评论的请求，如对回复问题进行操作，它会进行两个操作，一个是插入评论，另一个是更新问题的评论数：当提交评论后，由于网络延迟
+或者数据库抖动，导致插入评论的动作成功，更新问题评论数抛异常，则会产生更新了评论，却没有更新评论数的现象
+2. 解决办法：在方法上加Spring提供的注解@Transactional，把整个的方法体加上一个事务；当两个动作都包裹在一个事务中的时候，若有一个动作失败了，整
+体就会回滚掉
+3. Spring有AOP的技能加持，方法打一个@Transactional注解，Spring就自动的管理这个事务，P39事务的源码分析
+4. 前端页面的编写，根据以往的语法和bootstrap模板，使用community.js;在回复的button绑定一个onclick事件,绑定到post()这么一个方法,post()方法在
+     community.js中实现,前端向后端异步传入JSON对象的方法实现：
+```js
+    function post() {
+        var questionId = $("#question_id").val();
+        var content = $("#comment_content").val();
+        $.ajax({
+            type: "POST",
+            url: "/comment",
+            data: JSON.stringify({
+                "parentId":questionId,
+                "content":content,
+                "type":1
+            }),
+            success: function (response) {
+                console.log(response)
+            },
+            dataType: "json",
+            contentType:"application/json"
+        });
+        console.log("所评论问题id " + questionId);
+        console.log("评论内容 " + content);
+    }
+```
+*     注意：url要回到根目录；
+*     通过前端页面标签的ID，获取对象，然后在data中一一对应起来，和commentDTO中的属性对应，这里注意data的格式必须是
+     JSON格式，所以用JSON.Stringify()将对象处理下；
+*    我还添加了contentType:"application/json"，这也是一个必要属性
     
     
     

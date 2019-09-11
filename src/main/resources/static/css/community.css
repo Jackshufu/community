@@ -31,3 +31,19 @@
     margin: 50px;
 }
 
+.comment-imgStyle{
+    margin-top: 10px;
+}
+
+.comment-name{
+    padding-top: 22px;
+}
+
+.comment-text{
+    margin: 15px 0px;
+}
+
+.comment-btn{
+    margin-bottom: 14px;
+    float: right;
+}
