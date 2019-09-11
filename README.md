@@ -681,6 +681,11 @@ CustomErrorController去处理，当没有拦截住呢，4xx的请求我们需�
 *     通过前端页面标签的ID，获取对象，然后在data中一一对应起来，和commentDTO中的属性对应，这里注意data的格式必须是
      JSON格式，所以用JSON.Stringify()将对象处理下；
 *    我还添加了contentType:"application/json"，这也是一个必要属性
+
+
+5. local storage
+6. 前端调试是在代码中加入：debugger;
+
     
     
     
