@@ -4,6 +4,10 @@
 function post() {
     var questionId = $("#question_id").val();
     var content = $("#comment_content").val();
+    if(!content){
+        alert("您还没有输入回复内容呢~~~")
+        return ;
+    }
     $.ajax({
         type: "POST",
         url: "/comment",
@@ -14,6 +18,7 @@ function post() {
         }),
         success: function (response) {
             if (response.code == 200) {
+                window.location.reload();
                 $("#comment_section").hide()
             } else {
                 if(response.code == 2004){

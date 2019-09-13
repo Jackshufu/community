@@ -48,7 +48,7 @@ public class CommucityController {
 //        2引入分页插件，pageNum为第几页，pageSize为分页展示页面总数，count为查询总数
 //        PageHelper.startPage(pageNum, pageSize);
         try {
-            PageInfo<QuestionDTO> questions = questionService.findList(pageNum,pageSize);
+            PageInfo<QuestionDTO> questions = questionService.findList(pageNum, pageSize);
             model.addAttribute("questions", questions);
             List<QuestionDTO> questionsList = questions.getList();
             System.out.println("questions = " + questionsList);

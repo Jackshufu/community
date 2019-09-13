@@ -11,7 +11,8 @@ public enum  CustomErrorCodeEnumImp implements CustomErrorCodeEnum {
     SYSTEM_ERROR(2005,"服务冒烟了，要不然你稍后再试试"),
     TYPE_PARAM_WRONG(2006,"评论类型错误"),
     NO_COMMENT(2007,"暂无评论"),
-    QUESTION_NOT_FIND(2008,"没有找到问题");
+    QUESTION_NOT_FIND(2008,"没有找到问题"),
+    CONTENT_IS_EMPTY(2009,"评论内容为空，请输入内容");
 
 
 

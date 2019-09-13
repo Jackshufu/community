@@ -21,6 +21,7 @@
 <div class="container-fluid main">
     <div class="row ">
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+            <!--问题描述模块-->
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <h2>
                     <span th:text="${question.title}"></span>
@@ -36,8 +37,42 @@
                    th:if="${session.userFindByToken != null && session.userFindByToken.accountId == question.creator}">
                     <span class="glyphicon glyphicon-pencil">编辑</span>
                 </a>
+                <hr>
             </div>
+
+            <!--展示评论模块-->
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h4>
+                    <span th:text="${question.commentCount}"></span> 个回复
+                </h4>
+                <hr>
+                <div class="comment-foreach" th:each="comment : ${comments}">
+                    <div class="media-left">
+                        <a href="/index">
+                            <img class="media-object img-rounded" th:src="${comment.user.avatarUrl}">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <a th:href="'/index'">
+                            <h4 class="media-heading" th:text="${comment.user.name}"></h4>
+                        </a>
+                        <span th:text="${comment.content}"></span><br>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 menu-tag">
+                            <span class="glyphicon glyphicon-thumbs-up icon" aria-hidden="true"></span>
+                            <span class="glyphicon glyphicon-thumbs-down icon" aria-hidden="true"></span>
+                            <span class="glyphicon glyphicon-comment icon" aria-hidden="true"></span>
+                            <span th:text="${#dates.format(comment.gmtCreate,'yyyy-MM-dd')}"
+                                  class="pull-right date-tag"> </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--回复评论模块-->
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="comment_section">
+                <h4>
+                    <span ></span>提交回复
+                </h4>
+                <hr class="comment-span">
                 <div class="media-left">
                     <a href="/index">
                         <img class="media-object img-rounded comment-imgStyle" th:src="${question.user.avatarUrl}">
@@ -50,7 +85,8 @@
                 </div>
                 <!--<input type="hidden" id="question_id" value="2323">   假写一个问题编号，模拟评论时找不到值-->
                 <input type="hidden" id="question_id" th:value="${question.id}">
-                <textarea class="form-control comment-text" rows="12" id="comment_content" placeholder="请输入评论内容" ></textarea>
+                <textarea class="form-control comment-text" rows="12" id="comment_content"
+                          placeholder="请输入评论内容"></textarea>
                 <button type="button" class="btn btn-success comment-btn" onclick="post()">回复</button>
             </div>
 

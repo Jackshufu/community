@@ -14,6 +14,7 @@
     <script src="js/bootstrap.min.js" type="application/javascript"></script>
 </head>
 <script>
+    <!--当回复别人时自己没有登录的时候,点击登录跳转到登录页面,登陆成功后,判断是否可关闭,可以就关闭-->
     window.onload = function () {
 //        debugger;
         var closeable = window.localStorage.getItem("closeable");

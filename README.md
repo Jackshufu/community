@@ -516,7 +516,7 @@ CustomErrorController去处理，当没有拦截住呢，4xx的请求我们需�
 ```java
         package com.community.controller;
 
-        import com.community.dto.CommentDTO;
+        import com.community.dto.CommentCreateDTO;
         import com.community.mapper.CommentMapper;
         import com.community.model.Comment;
         import org.springframework.beans.factory.annotation.Autowired;
@@ -536,11 +536,11 @@ CustomErrorController去处理，当没有拦截住呢，4xx的请求我们需�
         
             @ResponseBody
             @RequestMapping(value = "/comment",method = RequestMethod.POST)
-            public Object postComment(@RequestBody CommentDTO commentDTO){
+            public Object postComment(@RequestBody CommentCreateDTO commentCreateDTO){
                 Comment comment = new Comment();
-                comment.setParentId(commentDTO.getParentId());
-                comment.setContent(commentDTO.getContent());
-                comment.setType(commentDTO.getType());
+                comment.setParentId(commentCreateDTO.getParentId());
+                comment.setContent(commentCreateDTO.getContent());
+                comment.setType(commentCreateDTO.getType());
                 comment.setGmtCreate(System.currentTimeMillis());
                 comment.setGmtModified(comment.getGmtCreate());
                 comment.setCommentator(1);
@@ -583,7 +583,7 @@ CustomErrorController去处理，当没有拦截住呢，4xx的请求我们需�
 ```java
             package com.community.controller;
             
-            import com.community.dto.CommentDTO;
+            import com.community.dto.CommentCreateDTO;
             import com.community.dto.ResultDTO;
             import com.community.mapper.CommentMapper;
             import com.community.model.Comment;
@@ -606,7 +606,7 @@ CustomErrorController去处理，当没有拦截住呢，4xx的请求我们需�
             
                 @ResponseBody
                 @RequestMapping(value = "/comment",method = RequestMethod.POST)
-                public Object postComment(@RequestBody CommentDTO commentDTO,
+                public Object postComment(@RequestBody CommentCreateDTO commentCreateDTO,
                                           HttpServletRequest request){
             
                     User user = (User) request.getSession().getAttribute("userFindByToken");
@@ -614,9 +614,9 @@ CustomErrorController去处理，当没有拦截住呢，4xx的请求我们需�
                         return ResultDTO.errorOf(2002, "当前用户未登录，不能进行评论，请先登录");
                     }
                     Comment comment = new Comment();
-                    comment.setParentId(commentDTO.getParentId());
-                    comment.setContent(commentDTO.getContent());
-                    comment.setType(commentDTO.getType());
+                    comment.setParentId(commentCreateDTO.getParentId());
+                    comment.setContent(commentCreateDTO.getContent());
+                    comment.setType(commentCreateDTO.getType());
                     comment.setGmtCreate(System.currentTimeMillis());
                     comment.setGmtModified(comment.getGmtCreate());
                     comment.setCommentator(user.getId());
@@ -685,6 +685,24 @@ CustomErrorController去处理，当没有拦截住呢，4xx的请求我们需�
 
 5. local storage
 6. 前端调试是在代码中加入：debugger;
+7. 炉石：缺法力飓风、血法师萨尔诺斯
+8. <h1></h1>标题标签传值可以用th:text
+9. <a>标签，要修饰margin，需要加上display：block
+10. 在判断评论内容是否为"" 或 null，我们用或者判断了两次
+```java
+            if(commentCreateDTO == null || commentCreateDTO.getContent() == "" || commentCreateDTO.getContent() == null){
+                return ResultDTO.errorOf(CustomErrorCodeEnumImp.CONTENT_IS_EMPTY);
+            }
+```
+这里我们引入commons.lang3的包，使用isBlank()方法判断是否是以上的两种情况，比较方便
+11. 提交问题后，window.location.reload()重新加载一下页面。这样刷新 了整个页面，不好
+12. 在前端也校验一下content是否为空，即!content
+13. 我么设置评论的顺序为按照时间顺序倒序排
+```java
+    commentExample.setOrderByClause("gmt_create desc");
+```
+
+
 
     
     
