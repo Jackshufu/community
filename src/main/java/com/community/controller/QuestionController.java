@@ -2,6 +2,7 @@ package com.community.controller;
 
 import com.community.dto.CommentDTO;
 import com.community.dto.QuestionDTO;
+import com.community.enums.CommentTypeEnum;
 import com.community.service.CommentService;
 import com.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +30,11 @@ public class QuestionController {
 
         questionService.addViewCount(id);
         QuestionDTO questionDTO = questionService.findQuestionById(id);
-        List<CommentDTO> comments = commentService.queryListByQuestionId(id);
+        List<QuestionDTO> hotQuestion = questionService.queryHotQuestion(questionDTO);
+        List<CommentDTO> comments = commentService.queryListByTargetId(id, CommentTypeEnum.QUESTION);
         model.addAttribute("question", questionDTO);
         model.addAttribute("comments", comments);
+        model.addAttribute("hotQuestionList", hotQuestion);
         return "question";
     }
 

@@ -14,7 +14,7 @@ import java.util.List;
 @Mapper
 public interface QuestionDTOMapper {
 
-    @Select("select * from question")
+    @Select("select * from question order by gmt_create desc")
     List<QuestionDTO> queryQuestionDTO();
 
     @Select("select * from question where creator = #{creator}")
@@ -26,4 +26,5 @@ public interface QuestionDTOMapper {
 
     @Insert("insert into question (title,description,gmt_create,gmt_modified,creator,user_id,tag) values (#{title},#{description},#{gmtCreate},#{gmtModified},#{creator},#{userId},#{tag})")
     void insertQuestionDTO(Question newQuestion);
+
 }

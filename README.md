@@ -684,7 +684,7 @@ CustomErrorController去处理，当没有拦截住呢，4xx的请求我们需�
 
 
 5. local storage
-6. 前端调试是在代码中加入：debugger;
+6. 前端调试是在js代码中加入：debugger;
 7. 炉石：缺法力飓风、血法师萨尔诺斯
 8. <h1></h1>标题标签传值可以用th:text
 9. <a>标签，要修饰margin，需要加上display：block
@@ -694,12 +694,83 @@ CustomErrorController去处理，当没有拦截住呢，4xx的请求我们需�
                 return ResultDTO.errorOf(CustomErrorCodeEnumImp.CONTENT_IS_EMPTY);
             }
 ```
-这里我们引入commons.lang3的包，使用isBlank()方法判断是否是以上的两种情况，比较方便
+这里我们引入commons.lang3的包，使用StringUtils的isBlank()方法判断是否是以上的两种情况，比较方便
 11. 提交问题后，window.location.reload()重新加载一下页面。这样刷新 了整个页面，不好
 12. 在前端也校验一下content是否为空，即!content
 13. 我么设置评论的顺序为按照时间顺序倒序排
 ```java
     commentExample.setOrderByClause("gmt_create desc");
+```
+
+# 问题三十二：实现二级评论功能
+1. 首先对于一个问题，点击进入后，先展示一级评论（考虑的是当问题比较多的话，会这影响页面的加载速度）
+2. 当鼠标悬浮在评论图标的时候，图标高亮，点击后会触发一个弹框，将一级评论的子评论都查询出来并展示在一级评论的页面下面
+3. 前端用th:data-id获取当前评论的id，绑定在onclick的方法上，将整个span对象传给onclick的方法上，然后在js代码就能获取到span对象，
+通过 对象.getAttribute("data-id");就能获取到id。 然后通过id选择器就能选到二级评论模块的div，在js代码中通过getAttribute获取是否addClass("in")的标志
+data-collapse，有则remove Class和Attribute，没有则设置Class和Attribute
+4. 点击之后触发active样式被添加|删除到页面的class中去： e.classList.remove("active");|e.classList.add("active");
+5. 二级评论套用一级评论展示的逻辑
+6.     border-radius: 20px;修饰边框为圆角；border: 2px solid #ebebeb;给div块加一个外边框，宽度2px
+7. 鼠标悬浮，光标变小手cursor: pointer;添加hover可以悬浮添加样式
+8. 在后端controller处理的时候，queryListByTargetId查询出来的数组用ResultDTO返回一个数组，但是在ResultDTO中没有这样的方法，于是需要在ResultDTO中重新修改，
+增加方法。
+* 由于传给ResultDTO的可能是一个List，也可能会是一个Object，于是这里就可以引入了泛型的概念在ResultDTO类上面
+9. 在js代码的展开、折叠方法collapseComment中，触发展开的时候，获取新的请求，拿到标签属性后，将后端获取到的内容写到页面上去，二级评论的这段代码，是要在js代码中手写去完成的
+```html
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 collapse sub-comment"
+                             th:id="${'comment-'+comment.id}">
+                            <!--展示二级评论(套用一级评论HTML代码)-->
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <h4>
+                                    <span th:text="${question.commentCount}"></span> 个回复
+                                </h4>
+                                <hr>
+                                <div class="comment-foreach-sub" th:each="comment : ${comments}">
+                                    <div class="media-left">
+                                        <a href="/index">
+                                            <img class="media-object img-rounded"
+                                                 th:src="${comment.user.avatarUrl}">
+                                        </a>
+                                    </div>
+                                    <div class="media-body menu-tag-sub ">
+                                        <a th:href="'/index'">
+                                            <span class="media-heading" style="font-size: 18px;">亮亮</span>
+                                        </a> •
+                                        <span th:text="${#dates.format(comment.gmtCreate,'yyyy-MM-dd')}"
+                                              class="date-tag"> </span>
+                                        <span class="glyphicon glyphicon-comment icon pull-right" aria-hidden="true"
+                                              th:data-id="${comment.id}"
+                                              onclick="collapseComment(this)"></span>
+                                        <br>
+                                        <span th:text="${comment.content}"></span><br>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <input type="text" class="form-control" placeholder="请输入你的评论..."
+                                       th:id="${'input-'+comment.id}">
+                                <button type="button" class="btn btn-success pull-right sub-comment-btn"
+                                        onclick="comment(this)" th:data-id="${comment.id}">回复
+                                </button>
+                            </div>
+                        </div>
+```
+10. jquery中有getJSON,将后台查到的数据查到页面上，用js拼接
+当点击collapseComment时，往th:id="${'comment-body-'+comment.id}"这个id追加标签；
+ * 去js代码中追加标签
+ * 关于时间的格式化，可以使用moment js,有一个data format处理方法
+[js中格式化时间的网站momentjs](http://momentjs.cn/)
+11. 查询数据倒序排列@Select("select * from question order by gmt_create desc")
+ 
+# 问题三十二：实现模糊查询，相似推荐
+在数据库我们可以这样模糊查询字段相关的数据：
+```mysql
+  select id,title,tag from question where (tag like "%Spring%" or tag like "%Boot%"  or tag like "%Java%") and id != 110 ;
+```
+1. 加括号是排除了id = 110的数据，不加括号排除不了
+2. 以上的方式我们也可以使用正则表达式实现
+```mysql
+  select id,title,tag from question where tag regexp 'Spring|Boot|Java' and id != 110;
 ```
 
 

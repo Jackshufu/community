@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 public class QuestionDTO {
-    private Integer id;
+    private Long id;
     private String title;
     private String description;
     private String tag;

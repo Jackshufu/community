@@ -86,7 +86,7 @@ public class PublishController {
         question.setId(id);
 
         questionService.createOrUpdateQuestion(question);
-        return "publish";
+        return "redirect:index";
     }
 
     @GetMapping("publish/{id}")

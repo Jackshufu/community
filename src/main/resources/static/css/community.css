@@ -58,15 +58,32 @@
 .menu-tag .icon {
     margin-left: -16px;
     margin-right: 35px;
-    font-size: 29px;
+    font-size: 20px;
     cursor: pointer;
     margin-bottom: 20px;
+}
+
+.menu-tag-sub .icon {
+    cursor: pointer;
+    color: #999;
+}
+
+.menu-tag-sub .icon:hover {
+    color: #499ef3;
+}
+
+.menu-tag . commentCountSize {
+    font-size: 17px;
 }
 
 .date-tag {
     font-size: 12px;
     margin-top: 15px;
 
+}
+
+.menu-tag .active {
+    color: #499ef3;
 }
 
 .menu-tag .icon:hover {
@@ -80,8 +97,36 @@
     margin-left: 25px;
 }
 
+.comment-foreach-sub {
+    border-bottom: 1px solid #f0f2f7;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    padding-bottom: 14px;
+}
+
 .comment-span {
     margin-top: 0px;
     margin-bottom: 0px;
 }
 
+.sub-comment {
+    border: 2px solid #ebebeb;
+    border-radius: 20px;
+    margin-top: -15px;
+    margin-bottom: 20px;
+    padding-top: 13px;
+    padding-bottom: 20px;
+}
+
+.sub-comment-btn {
+    margin-top: 20px;
+}
+
+.question-tag {
+    margin-right: 5px;
+}
+
+.hotQuestion {
+    list-style: none;
+    margin-left: -40px;
+}

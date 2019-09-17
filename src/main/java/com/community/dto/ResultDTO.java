@@ -4,15 +4,19 @@ import com.community.exception.CustomErrorCodeEnumImp;
 import com.community.exception.CustomException;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * Created by 舒先亮 on 2019/9/9.
  */
 @Data
-public class ResultDTO {
+public class ResultDTO<T> {
     //    code是像code码一样，用来告诉前端当前是此状态码的状态
     private Integer code;
     //    message是用来提示的
     private String message;
+    //
+    private T data;
 
     public static ResultDTO errorOf(Integer code, String message) {
         ResultDTO resultDTO = new ResultDTO();
@@ -38,5 +42,13 @@ public class ResultDTO {
 //        resultDTO.setCode(ex.getCode());
 //        resultDTO.setMessage(ex.getMessage());
         return errorOf(ex.getCode(),ex.getMessage());
+    }
+
+    public static <T> ResultDTO okOf(T t) {
+        ResultDTO resultDTO = new ResultDTO();
+        resultDTO.setCode(200);
+        resultDTO.setMessage("请求成功");
+        resultDTO.setData(t);
+        return resultDTO;
     }
 }

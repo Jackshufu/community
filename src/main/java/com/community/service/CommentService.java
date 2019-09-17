@@ -4,10 +4,7 @@ import com.community.dto.CommentDTO;
 import com.community.enums.CommentTypeEnum;
 import com.community.exception.CustomErrorCodeEnumImp;
 import com.community.exception.CustomException;
-import com.community.mapper.CommentMapper;
-import com.community.mapper.QuestionExtMapper;
-import com.community.mapper.QuestionMapper;
-import com.community.mapper.UserMapper;
+import com.community.mapper.*;
 import com.community.model.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +30,9 @@ public class CommentService {
     private CommentMapper commentMapper;
 
     @Autowired
+    private CommentExtMapper commentExtMapper;
+
+    @Autowired
     private QuestionExtMapper questionExtMapper;
 
     @Autowired
@@ -53,6 +53,11 @@ public class CommentService {
                 throw new CustomException(CustomErrorCodeEnumImp.NO_COMMENT);
             }
             commentMapper.insert(comment);
+//          为子评论计数，累计数量放在父评论的comment_Count上
+            Comment parentComment = new Comment();
+            parentComment.setId(comment.getParentId());
+            parentComment.setCommentCount(1);
+            commentExtMapper.incCommentCount(parentComment);
         } else {
 //            回复问题
             Question question = questionMapper.selectByPrimaryKey(comment.getParentId());
@@ -65,13 +70,13 @@ public class CommentService {
         }
     }
 
-    public List<CommentDTO> queryListByQuestionId(Long id) {
+    public List<CommentDTO> queryListByTargetId(Long id, CommentTypeEnum type) {
 
         CommentExample commentExample = new CommentExample();
 //        查询评论类型为question的所有的comments
         commentExample.createCriteria()
                 .andParentIdEqualTo(id)
-                .andTypeEqualTo(CommentTypeEnum.QUESTION.getType());
+                .andTypeEqualTo(type.getType());
         commentExample.setOrderByClause("gmt_create desc");
         List<Comment> comments = commentMapper.selectByExample(commentExample);
 //        接下来就是通过查到的评论去查找user，这里的查找User和question中的实现不太一样，因为评论非常多的话，我们会查询出来很多重复的user，因此在这里使用
@@ -79,6 +84,7 @@ public class CommentService {
         if (comments.size() == 0) {
             return new ArrayList<>();
         }
+
 //        查询所有的评论者
 //        List<Integer> commentator = comments.stream().map(comment -> comment.getCommentator()).collect(Collectors.toList());
 //        set不允许重复
@@ -103,6 +109,7 @@ public class CommentService {
             CommentDTO commentDTO = new CommentDTO();
             BeanUtils.copyProperties(comment, commentDTO);
             commentDTO.setUser(userMap.get(comment.getCommentator()));
+//            commentDTO.setCommentator(comment.);
             return commentDTO;
         }).collect(Collectors.toList());
 

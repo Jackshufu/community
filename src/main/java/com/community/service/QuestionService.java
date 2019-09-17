@@ -13,12 +13,15 @@ import com.community.model.User;
 import com.community.model.UserExample;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by 舒先亮 on 2019/8/26.
@@ -200,5 +203,29 @@ public class QuestionService {
         question.setViewCount(1);
         questionExtMapper.incView(question);
 
+    }
+
+    /**
+     * 热点关联问题查询实现方法
+     * @param queryQuestionDTO
+     * @return
+     */
+    public List<QuestionDTO> queryHotQuestion(QuestionDTO queryQuestionDTO) {
+        if (StringUtils.isBlank(queryQuestionDTO.getTag())) {
+            return new ArrayList<>();
+        }
+        String[] tags = StringUtils.split(queryQuestionDTO.getTag(), ",| ");
+        String regexpTag = Arrays.stream(tags).collect(Collectors.joining("|"));
+        Question question = new Question();
+        question.setId(queryQuestionDTO.getId());
+        question.setTag(regexpTag);
+
+        List<Question> questions = questionExtMapper.queryHotQuestion(question);
+        List<QuestionDTO> questionDTOS = questions.stream().map(q -> {
+            QuestionDTO questionDTO = new QuestionDTO();
+            BeanUtils.copyProperties(q, questionDTO);
+            return questionDTO;
+        }).collect(Collectors.toList());
+        return questionDTOS;
     }
 }
