@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/css/community.css">
     <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+    <script src="/js/community.js" type="application/javascript"></script>
 
 </head>
 
@@ -23,14 +24,15 @@
                 <span class="glyphicon glyphicon-plus"></span>发起
             </h2>
             <hr>
-            <form action="/publish" method="post" >
-                <input type="hidden" id="id" name = "id" th:value="${id}">
+            <form action="/publish" method="post">
+                <input type="hidden" id="id" name="id" th:value="${id}">
                 <div>
                     <div class="form-group">
                         <label for="title">问题标题（简单扼要）:</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" th:value="${title}" aria-label="..." placeholder="问题标题..."
-                                   id="title" name="title">
+                            <input type="text" class="form-control" th:value="${title}" aria-label="..."
+                                   placeholder="问题标题..."
+                                   id="title" name="title" autocomplete="off">
                             <div class="input-group-btn">
                                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
                                         aria-haspopup="true" aria-expanded="false">选择分类<span class="caret"></span>
@@ -49,17 +51,82 @@
 
                 <div class="form-group">
                     <label for="description">问题补充 (必填，请参照右侧提示):</label>
-                    <textarea name="description" th:text="${description}" id="description" cols="30" rows="10" class="form-control"
-                              placeholder="请输入问题描述..." ></textarea>
+                    <textarea name="description" th:text="${description}" id="description" cols="30" rows="10"
+                              class="form-control"
+                              placeholder="请输入问题描述..."></textarea>
                 </div>
                 <div class="form-group">
                     <label for="tag">添加标签:</label>
-                    <input type="text" class="form-control" id="tag" name="tag" th:value="${tag}" placeholder="创建或搜索添加新话题，以“，”号隔开">
+                    <!--<input type="text" class="form-control" id="tag" name="tag" th:value="${tag}" placeholder="创建或搜索添加新话题，以“，”号隔开"-->
+                    <!--autocomplete="off">-->
+                    <!--点击弹出下拉框-->
+                    <div>
+                        <!--<input class="form-control" type="text"  id="dropdownMenu1" data-toggle="dropdown" >-->
+                        <input class="form-control" type="text" id="tag" name="tag" th:value="${tag}"
+                               placeholder="创建或搜索添加新话题，以“，”号隔开" autocomplete="off" data-toggle="dropdown"
+                               onclick="showSelectTags()"
+                        />
+                    </div>
+                    <!--标签选择折叠位置-->
+                    <div id="select-tag" style  ="display:none">
+                        <ul id="myTab" class="nav nav-tabs" aria-labelledby="dropdownMenu1">
+                            <li th:each="selectCategory,selectCategoryStat: ${tags}" th:class="${selectCategoryStat.first?'active':''}">
+                                <a th:href="${'#'+selectCategory.CategoryName}" data-toggle="tab"
+                                   th:text="${selectCategory.CategoryName}">
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div role="tabpanel" th:id="${selectCategory.CategoryName}"
+                                 th:each="selectCategory,selectCategoryStat: ${tags}" th:class="${selectCategoryStat.first?'tab-pane active':'tab-pane'}">
+                                <span th:each="selectTag:${selectCategory.tags}">
+                                    <a class="publish-tag" onclick="selectTags(this)" th:data-tag="${selectTag}"
+                                    th:text="${selectTag}"></a>
+                                </span>
+
+                            </div>
+                        </div>
+                        <!--<div id="myTabContent" class="tab-content" th:each="selectCategory: ${tags}">-->
+                        <!--<div class="tab-pane fade in" th:id="${selectCategory.CategoryName}">-->
+                        <!--<a class="publish-tag" onclick="selectTags(this)" th:data-tag="${selectTag}"-->
+                        <!--th:each="selectTag:${selectCategory.tags}"-->
+                        <!--th:text="${selectTag}"></a>-->
+                        <!--</div>-->
+                        <!--</div>-->
+                    </div>
+                    <!--<div>-->
+                    <!--<ul id="myTab" class="nav nav-tabs" aria-labelledby="dropdownMenu1">-->
+                    <!--<li class="active">-->
+                    <!--<a href="#aaa" data-toggle="tab">-->
+                    <!--开发语言-->
+                    <!--</a>-->
+                    <!--</li>-->
+                    <!--<li><a href="#ios" data-toggle="tab">平台框架</a></li>-->
+                    <!--</ul>-->
+                    <!--<div id="myTabContent" class="tab-content">-->
+                    <!--<div class="tab-pane fade in active" id="aaa">-->
+                    <!--<a class="publish-tag" onclick="selectTags('php')">php</a>-->
+                    <!--</div>-->
+                    <!--<div class="tab-pane fade" id="ios">-->
+                    <!--<a class="publish-tag" onclick="selectTags('java')">java</a>-->
+                    <!--<a class="publish-tag">css</a>-->
+                    <!--</div>-->
+                    <!--<div class="tab-pane fade" id="jmeter">-->
+                    <!--<p>jMeter 是一款开源的测试软件。它是 100% 纯 Java 应用程序，用于负载和性能测试。</p>-->
+                    <!--</div>-->
+                    <!--<div class="tab-pane fade" id="ejb">-->
+                    <!--<p>Enterprise Java Beans（EJB）是一个创建高度可扩展性和强大企业级应用程序的开发架构，部署在兼容应用程序服务器（比如 JBOSS、Web Logic-->
+                    <!--等）的 J2EE 上。-->
+                    <!--</p>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--</div>-->
                 </div>
                 <div class="container-fluid">
                     <div class="row ">
                         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-                            <div class="alert alert-danger fade in col-lg-12 col-md-12 col-sm-12 col-xs-12" th:text="${error}" th:if="${error!= null} " >
+                            <div class="alert alert-danger fade in col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                 th:text="${error}" th:if="${error!= null} ">
                                 <!--<button type="button" class="close" data-dismiss="alert" >&times;</button>
                                 <strong>亲！</strong> 提交失败！-->
                             </div>

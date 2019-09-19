@@ -772,6 +772,58 @@ data-collapse，有则remove Class和Attribute，没有则设置Class和Attribut
 ```mysql
   select id,title,tag from question where tag regexp 'Spring|Boot|Java' and id != 110;
 ```
+3. HTML <input> autocomplete 属性启动自动完成功能
+4. js中通过input框的id属性拿到前一次的值，如果有值，则在后面追加逗号并把当前value追加上去，若没有值，则直接赋值
+```js
+    function selectTags(value) {
+    var previous = $("#tag").val();
+    if (previous) {
+        var currentVal = $("#tag").val(previous + ',' + value);
+    } else {
+        $("#tag").val(value);
+    }
+}
+```
+
+5. 增加判断插入的标签值是否已经存在
+```js
+    function selectTags(value) {
+    var previous = $("#tag").val();
+    if (previous.indexOf(value) == -1) {
+        //    说明之前的值是存在的了
+        //    不追加
+        //    不存在的话就添加 == -1 说明说明不存在
+        if (previous) {
+            var currentVal = $("#tag").val(previous + ',' + value);
+        } else {
+            $("#tag").val(value);
+        }
+    }
+}
+```
+6. 将展示标签的导航栏用一个大的div封装起来，当点击input框的时候，让display: block;导航栏就会展示出来，当变成
+display: none;时，导航栏就会消失
+ * 实现方式：给input框增加一个onclick事件，和大的div通过id进行绑定
+```js
+    /**
+ * 当点击input框的时候，改变display：none属性为，display:block,将标签导航栏展示出来
+ */
+    function showSelectTags() {
+        //jquery自带的方式，将style中的display:none属性改变，展示大div
+        var val = $("#select-tag").show();
+        console.log(val);
+    
+    }
+```
+7. 点击其他地方的时候，这个标签展示的界面消失，可以考虑得焦失焦，focus and blur and on、遮蔽层解决
+8. 将所有的标签写在java代码中catch文件夹中
+9. 提交标签的时候校验一下，必须符合缓存cache中录入的字段,校验在publishController中
+10. 如何在th:each遍历的时候，发现当遍历的子对象是第一个的时候就展示呢？
+    * th:each遍历的时候有诸如 th:each="selectCategory,selectCategoryStat: ${tags}" th:class="${selectCategoryStat.first?'tab-pane active':'tab-pane'}"
+    selectCategoryStat判断是first，则使用三目运算符追加class
+    * 也可以实现js代码中showSelectTags()对应的的li的first-child的class加active
+    * 还可以用th:classappend
+    
 
 
 

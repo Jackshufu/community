@@ -47,3 +47,22 @@ public class a {
 
 }
 */
+
+/*<div id="select-tag" style="display:none">
+<ul id="myTab" class="nav nav-tabs" aria-labelledby="dropdownMenu1">
+<li th:each="selectCategory: ${tags}">
+<a th:href="${'#'+selectCategory.CategoryName}" data-toggle="tab"
+        th:text="${selectCategory.CategoryName}">
+</a>
+</li>
+</ul>
+<div id="myTabContent" class="tab-content" >
+<div class="tab-pane fade in active" th:each="selectCategory: ${tags}"
+        >
+<a class="publish-tag" onclick="selectTags(this)" th:data-tag="${selectTag}"
+        th:id="${selectCategory.CategoryName}" th:each="selectTag:${selectCategory.tags}"
+        th:text="${selectTag}"></a>
+</div>
+</div>
+</div>*/
+

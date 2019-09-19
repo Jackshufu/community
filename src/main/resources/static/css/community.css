@@ -86,6 +86,26 @@
     color: #499ef3;
 }
 
+.tag-active:hover {
+    background-color: rgb(0, 154, 97);;
+}
+
+.publish-tag {
+    text-decoration: none;
+    padding: 0 15px;
+    border-radius: 11px;
+    background-color: rgba(1,126,102,0.08);
+    color: #017E66;
+    display: inline-block;
+}
+
+.publish-tag:hover{
+    color: #fff;
+    text-decoration: none;
+    background-color: #017E66;
+    cursor: pointer;
+}
+
 .menu-tag .icon:hover {
     color: #499ef3;
 }

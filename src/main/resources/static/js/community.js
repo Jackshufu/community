@@ -79,47 +79,47 @@ function collapseComment(e) {
     } else {
         var subCommentContent = $("#comment-" + id);
         //判断如果子标签不只包含评论的子标签的话，说明子评论标签内容不为空，则不需要重新each遍历追加子评论内容了，直接展开就好了；不需要加载，以后只要提交回复就能够按照时间顺序展示在最上面
-        if(subCommentContent.children().length != 1){
+        if (subCommentContent.children().length != 1) {
             //展开二级评论
             comments.addClass("in");
             //标记二级评论展开状态
             e.setAttribute("data-collapse", "in")
             e.classList.add("active");
-        }else {
+        } else {
             //要不然就each遍历一遍，然后展示追加到子评论模块
             $.getJSON("/comment/" + id, function (data) {
                 console.log(data)
                 //reverse()方法将查出来的从上到下按顺序展示出来，即时间倒序
-                $.each( data.data.reverse(), function( index,comment ) {
+                $.each(data.data.reverse(), function (index, comment) {
                     console.log(comment)
 
                     var mediaLeftElement = $("<div/>", {
-                        "class":"media-left"
+                        "class": "media-left"
                     }).append($("<img/>", {
-                        "class":"media-object img-rounded",
-                        "src":comment.user.avatarUrl
+                        "class": "media-object img-rounded",
+                        "src": comment.user.avatarUrl
                     }));
 
                     var mediaBodyElement = $("<div/>", {
-                        "class":"media-body menu-tag-sub",
+                        "class": "media-body menu-tag-sub",
                     }).append($("<h5/>", {
-                        "class":"media-heading",
-                        "html":comment.user.name
+                        "class": "media-heading",
+                        "html": comment.user.name
                     })).append($("<div/>", {
-                        "html":comment.content
+                        "html": comment.content
                     })).append($("<div/>", {
-                        "class":"menu",
+                        "class": "menu",
                     }).append($("<span/>", {
-                        "class":"pull-right date-tag menu-tag",
-                        "html":moment(comment.gmtCreate).format('YYYY-MM-DD')
+                        "class": "pull-right date-tag menu-tag",
+                        "html": moment(comment.gmtCreate).format('YYYY-MM-DD')
                     })));
 
 
                     var commentForeachSubElement = $("<div/>", {
-                        "class":"comment-foreach-sub",
+                        "class": "comment-foreach-sub",
                     }).append(mediaLeftElement).append(mediaBodyElement);
 
-                    var  commentElement = $("<div/>", {
+                    var commentElement = $("<div/>", {
                         "class": "col-lg-12 col-md-12 col-sm-12 col-xs-12",
                         //这个id是我们点击的id，不是外层的id
                         // "id": "comment-" + id,
@@ -151,7 +151,33 @@ function collapseComment(e) {
 
             });
         }
-
-
     }
+}
+
+/**
+ * 点击页面的标签，js端获取input框中的值，无，则添加，有则追加','号并添加至input框中去
+ * */
+function selectTags(e) {
+    var value = e.getAttribute("data-tag");
+    var previous = $("#tag").val();
+    if (previous.indexOf(value) == -1) {
+        //    说明之前的值是存在的了
+        //    不追加
+        //    不存在的话就添加 == -1 说明说明不存在
+        if (previous) {
+            var currentVal = $("#tag").val(previous + ',' + value);
+        } else {
+            $("#tag").val(value);
+        }
+    }
+}
+
+/**
+ * 当点击input框的时候，改变display：none属性为，display:block,将标签导航栏展示出来
+ */
+function showSelectTags() {
+    //jquery自带的方式，将style中的display:none属性改变，展示大div
+    var val = $("#select-tag").show();
+    console.log(val);
+
 }
