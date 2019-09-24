@@ -100,11 +100,24 @@ public class QuestionService {
         return questionDTOList;
     }
 
-    public PageInfo<QuestionDTO> findMyList(Integer pageNum, Integer pageSize, String accountId) {
+    public PageInfo<QuestionDTO> findMyList(Integer pageNum, Integer pageSize, Long userId) {
+        //        1.判断页面参数非空
+        if (pageNum == null) {
+            pageNum = 1; //设置默认当前页
+        }
+        if (pageNum <= 0) {
+            pageNum = 1;
+        }
+        if (pageSize == null) {
+            pageSize = 5;
+        }
+        System.out.println("初始页面，当前位置为第" + pageNum + "页" + "   分页范围:展示" + pageSize + "页");
+//        2引入分页插件，pageNum为第几页，pageSize为分页展示页面总数，count为查询总数
+//        PageHelper.startPage(pageNum, pageSize);
         //        查出所有的question数据，放在list集合里面
         List<QuestionDTO> questionDTOList = new ArrayList<>();
         PageHelper.startPage(pageNum, pageSize);
-        List<QuestionDTO> questions = questionDTOMapper.queryMyQuestionDTO(accountId);
+        List<QuestionDTO> questions = questionDTOMapper.queryMyQuestionDTO(userId);
         PageInfo<QuestionDTO> pageInfo = new PageInfo<>(questions);
         System.out.println("questions = " + questions);
 //        使用循环遍历，获取具体的question

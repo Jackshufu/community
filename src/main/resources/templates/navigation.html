@@ -26,13 +26,19 @@
                         <li th:if="${session.userFindByToken} != null">
                             <a href="/publish">发布</a>
                         </li>
+                        <li th:if="${session.userFindByToken != null}">
+                            <a href="/profile/replies">通知<span class="badge" style="background-color: #ed4040;"
+                                                               th:if="${session.unReadCount != 0}"
+                                                               th:text="${session.unReadCount}"></span></a>
+                        </li>
                         <li th:if="${session.userFindByToken} == null">
                             <a href="https://github.com/login/oauth/authorize?client_id=Iv1.c83b663ef84a8086&redirect_uri=http://localhost:8080/callback&scope=user&state=1"
                             >登录</a>
                         </li>
                         <li class="dropdown" th:if="${session.userFindByToken} != null">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                               aria-expanded="false" >
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-haspopup="true"
+                               aria-expanded="false">
                                 <spqn th:text="${session.userFindByToken.getName()}"></spqn>
                                 <span class="caret"></span></a>
                             <ul class="dropdown-menu">

@@ -12,8 +12,9 @@ public enum  CustomErrorCodeEnumImp implements CustomErrorCodeEnum {
     TYPE_PARAM_WRONG(2006,"评论类型错误"),
     NO_COMMENT(2007,"暂无评论"),
     QUESTION_NOT_FIND(2008,"没有找到问题"),
-    CONTENT_IS_EMPTY(2009,"评论内容为空，请输入内容");
-
+    CONTENT_IS_EMPTY(2009,"评论内容为空，请输入内容"),
+    READ_NOTIFICATION_FAIL(2010,"兄die，你这是读别人的信息呢"),
+    NOTIFICATION_NOT_FOUND(2011,"通知怎么不见啦");
 
 
     @Override

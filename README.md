@@ -824,6 +824,26 @@ display: none;时，导航栏就会消失
     * 也可以实现js代码中showSelectTags()对应的的li的first-child的class加active
     * 还可以用th:classappend
     
+# 问题三十三：当别人回复时，记录一下通知加一
+1. 新建表
+```mysql
+  CREATE TABLE `community`.`notification` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `notifier` BIGINT NULL COMMENT '通知人',
+  `receiver` BIGINT NULL,
+  `outerid` BIGINT NULL,
+  `type` INT NULL,
+  `gmt_create` BIGINT NULL,
+  `status` INT NULL DEFAULT 0 COMMENT '已读未读',
+  PRIMARY KEY (`id`))
+COMMENT = '用户通知';
+```
+2. 创建枚举
+    * 优点，当看到这个枚举的时候，下意识就知道代码中包含的数字是干什么的，也方便代码的重构
+    
+
+
+    
 
 
 
@@ -839,8 +859,9 @@ display: none;时，导航栏就会消失
     
 
 # 问题
-    这个项目是什么类型的软件，目标用户是什么群体，我负责哪些模块，这些说完，要有突出的亮点
-    商品添加的功能，添加的时候也可以加一些别的逻辑
+   * 这个项目是什么类型的软件，目标用户是什么群体，我负责哪些模块，这些说完，要有突出的亮点
+   * 商品添加的功能，添加的时候也可以加一些别的逻辑
+   * Java如何将方法作为参数进行传递
     
     
 

@@ -1,10 +1,9 @@
-/*
 package com.community.controller;
 
-*/
 /**
  * Created by 舒先亮 on 2019/8/28.
  *//*
+public class a{
 
 public class a {
     @Override
@@ -65,4 +64,20 @@ public class a {
 </div>
 </div>
 </div>*/
+public class a{
+
+    public static void main(String[] args) {
+
+        aa();
+
+    }
+
+    public static boolean aa(){
+        if(true){
+            System.out.println("true = " + false);
+            return false;
+        }
+        return true;
+    }
+}
 

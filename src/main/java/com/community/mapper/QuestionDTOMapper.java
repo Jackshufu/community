@@ -17,8 +17,13 @@ public interface QuestionDTOMapper {
     @Select("select * from question order by gmt_create desc")
     List<QuestionDTO> queryQuestionDTO();
 
-    @Select("select * from question where creator = #{creator}")
-    List<QuestionDTO> queryMyQuestionDTO(String accountId);
+    /**
+     * 分页查询我的问题列表语句
+     * @param userId
+     * @return
+     */
+    @Select("select * from question where user_id = #{userId}")
+    List<QuestionDTO> queryMyQuestionDTO(Long userId);
 
 
     @Select("select * from question where id = #{id}")

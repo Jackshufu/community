@@ -3,6 +3,7 @@ package com.community.interceptor;
 import com.community.mapper.UserMapper;
 import com.community.model.User;
 import com.community.model.UserExample;
+import com.community.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -21,6 +22,9 @@ public class SessionInterceptor implements HandlerInterceptor {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private NotificationService notificationService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -45,6 +49,10 @@ public class SessionInterceptor implements HandlerInterceptor {
                     if (users.size() != 0) {
 
                         request.getSession().setAttribute("userFindByToken", users.get(0));
+                        Long unReadCount = notificationService.unReadCount(users.get(0).getId());
+                        request.getSession().setAttribute("unReadCount",unReadCount);
+
+
                     }
                     break;
                 }

@@ -18,24 +18,28 @@
 <div th:insert="~{navigation :: nav}"></div>
 <div class="container-fluid main navigation">
     <div class="row ">
+        <!--左半部分-->
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
             <h2>
                 <span class="glyphicon glyphicon-list" th:text="${actionName}"></span>
             </h2>
             <hr>
-            <!--            <div th:if="${action} == 'question'">-->
-            <div class="media" th:each="question : ${myQuestionsList}">
-                <div class="media-left">
-                    <a href="/">
-                        <img class="media-object img-rounded" th:src="${question.user.avatarUrl}">
-                    </a>
-                </div>
-                <div class="media-body">
-                    <a th:href="'/question/'+${question.id}">
-                        <h4 class="media-heading" th:text="${question.title}"></h4>
-                    </a>
-                    <span th:text="${question.description}"></span><br>
-                    <span class="text-desc">
+            <!--包裹我的问题和我的回复两大模块-->
+            <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+                <!--如果点击的是我的问题-->
+                <div th:if="${action} == 'questions'">
+                    <div class="media" th:each="question : ${myQuestionsList}">
+                        <div class="media-left">
+                            <a href="/">
+                                <img class="media-object img-rounded" th:src="${question.user.avatarUrl}">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <a th:href="'/question/'+${question.id}">
+                                <h4 class="media-heading" th:text="${question.title}"></h4>
+                            </a>
+                            <span th:text="${question.description}"></span><br>
+                            <span class="text-desc">
                         <span th:text="${question.commentCount}"></span>个回复 •
                         <span th:text="${question.viewCount}"></span> 次浏览 •
                         <span th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd hh:mm')}"></span>
@@ -44,56 +48,116 @@
                         <span class="glyphicon glyphicon-pencil">编辑</span>
                         </a>
                     </span>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="alert alert-danger fade in col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                             th:text="${error}"
+                             th:if="${error!= null} ">
+                            <!--<button type="button" class="close" data-dismiss="alert" >&times;</button>
+                            <strong>亲！</strong> 提交失败！-->
+                        </div>
+                    </div>
+                    <!--分页-->
+                    <div class="modal-footer no-margin-top">
+                        <div class="col-md-6">
+                            当前第 [[${myQuestions.pageNum}]]页,共 [[${myQuestions.pages}]] 页.一共 [[${myQuestions.total}]] 条记录<br>
+                        </div>
+                        <ul class="pagination pull-right no-margin">
+                            <li th:if="${myQuestions.hasPreviousPage}">
+                                <a th:href="'/profile/questions?pageNum=1'">首页</a>
+                            </li>
+
+                            <li class="prev" th:if="${myQuestions.hasPreviousPage}">
+                                <a th:href="'/profile/questions?pageNum='+${myQuestions.prePage}">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <!--遍历条数-->
+                            <li th:each="nav:${myQuestions.navigatepageNums}">
+                                <a th:href="'/profile/questions?pageNum='+${nav}" th:text="${nav}"
+                                   th:if="${nav != myQuestions.pageNum}"></a>
+                                <span style="font-weight: bold;background: #6faed9;"
+                                      th:if="${nav == myQuestions.pageNum}"
+                                      th:text="${nav}"></span>
+                            </li>
+
+                            <li class="next" th:if="${myQuestions.hasNextPage}">
+                                <a th:href="'/profile/questions?pageNum='+${myQuestions.nextPage}">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+
+                            <li th:if="${myQuestions.hasNextPage}">
+                                <a th:href="'/profile/questions?pageNum='+${myQuestions.pages}">尾页</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--<span th:text="${questions.pageNum}"></span><br>
+                    <span th:text="${questions.hasPreviousPage}"></span><br>
+                    <span th:text="${nav}"></span><br>
+                    <span th:text="${questions.nextPage}"></span><br>
+                    <span th:text="${questions}"></span>-->
+                </div>
+                <!--如果点击的是我的回复，展示我的回复-->
+                <div th:if="${action} == 'replies'">
+                    <div class="media" th:each="notification : ${notificationsList}">
+                        <div class="media-body">
+                            <span th:text="${notification.notifierName}"></span>
+                            <span th:text="${notification.typeName}"></span>
+                            <a th:href="@{'/notification/'+${notification.id}}"><span class="media-heading"
+                                                                                      th:text="${notification.outerTitle}"></span>
+                            </a>
+                            <span class="label label-danger" th:if="${notification.status == 0}">未读</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="alert alert-danger fade in col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                             th:text="${error}"
+                             th:if="${error!= null} ">
+                            <!--<button type="button" class="close" data-dismiss="alert" >&times;</button>
+                            <strong>亲！</strong> 提交失败！-->
+                        </div>
+                    </div>
+                    <div class="modal-footer no-margin-top">
+                        <div class="col-md-6">
+                            当前第 [[${notifications.pageNum}]]页,共 [[${notifications.pages}]] 页.一共
+                            [[${notifications.total}]] 条记录<br>
+                        </div>
+                        <ul class="pagination pull-right no-margin">
+                            <li th:if="${notifications.hasPreviousPage}">
+                                <a th:href="'/profile/replies?pageNum=1'">首页</a>
+                            </li>
+
+                            <li class="prev" th:if="${notifications.hasPreviousPage}">
+                                <a th:href="'/profile/replies?pageNum='+${notifications.prePage}">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <!--遍历条数-->
+                            <li th:each="nav:${notifications.navigatepageNums}">
+                                <a th:href="'/profile/replies?pageNum='+${nav}" th:text="${nav}"
+                                   th:if="${nav != notifications.pageNum}"></a>
+                                <span style="font-weight: bold;background: #6faed9;"
+                                      th:if="${nav == notifications.pageNum}"
+                                      th:text="${nav}"></span>
+                            </li>
+
+                            <li class="next" th:if="${notifications.hasNextPage}">
+                                <a th:href="'/profile/replies?pageNum='+${notifications.nextPage}">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+
+                            <li th:if="${notifications.hasNextPage}">
+                                <a th:href="'/profile/replies?pageNum='+${notifications.pages}">尾页</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="alert alert-danger fade in col-lg-12 col-md-12 col-sm-12 col-xs-12" th:text="${error}"
-                     th:if="${error!= null} ">
-                    <!--<button type="button" class="close" data-dismiss="alert" >&times;</button>
-                    <strong>亲！</strong> 提交失败！-->
-                </div>
-            </div>
-            <div class="modal-footer no-margin-top">
-                <div class="col-md-6">
-                    当前第 [[${myQuestions.pageNum}]]页,共 [[${myQuestions.pages}]] 页.一共 [[${myQuestions.total}]] 条记录<br>
-                </div>
-                <ul class="pagination pull-right no-margin">
-                    <li th:if="${myQuestions.hasPreviousPage}">
-                        <a th:href="'/profile/questions?pageNum=1'">首页</a>
-                    </li>
-
-                    <li class="prev" th:if="${myQuestions.hasPreviousPage}">
-                        <a th:href="'/profile/questions?pageNum='+${myQuestions.prePage}">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <!--遍历条数-->
-                    <li th:each="nav:${myQuestions.navigatepageNums}">
-                        <a th:href="'/profile/questions?pageNum='+${nav}" th:text="${nav}"
-                           th:if="${nav != myQuestions.pageNum}"></a>
-                        <span style="font-weight: bold;background: #6faed9;" th:if="${nav == myQuestions.pageNum}"
-                              th:text="${nav}"></span>
-                    </li>
-
-                    <li class="next" th:if="${myQuestions.hasNextPage}">
-                        <a th:href="'/profile/questions?pageNum='+${myQuestions.nextPage}">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-
-                    <li th:if="${myQuestions.hasNextPage}">
-                        <a th:href="'/profile/questions?pageNum='+${myQuestions.pages}">尾页</a>
-                    </li>
-                </ul>
-            </div>
-            <!--<span th:text="${questions.pageNum}"></span><br>
-            <span th:text="${questions.hasPreviousPage}"></span><br>
-            <span th:text="${nav}"></span><br>
-            <span th:text="${questions.nextPage}"></span><br>
-            <span th:text="${questions}"></span>-->
         </div>
-        <!--            </div>-->
-
+        <!--右半部分选择我的问题或我的回复-->
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
             <div class="list-group">
                 <a href="/profile/questions"
@@ -101,7 +165,9 @@
                     我的问题
                 </a>
                 <a href="/profile/replies"
-                   th:class="(${action} == 'replies') ? ('list-group-item active'):('list-group-item')">我的回复</a>
+                   th:class="(${action} == 'replies') ? ('list-group-item active'):('list-group-item')">我的回复<span
+                        class="badge" style="background-color: #ed4040;" th:if="${session.unReadCount != 0}"
+                        th:text="${session.unReadCount}"></span></a>
             </div>
 
         </div>
