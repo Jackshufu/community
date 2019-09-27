@@ -5,6 +5,7 @@ import com.community.dto.GitHubUserDTO;
 import com.community.model.User;
 import com.community.privider.GitHubPrivider;
 import com.community.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,7 @@ import java.util.UUID;
  * Created by 舒先亮 on 2019/8/20.
  */
 @Controller
+@Slf4j
 public class CallBackController {
 
     @Autowired
@@ -75,6 +77,7 @@ public class CallBackController {
             reaponse.addCookie(new Cookie("token", token));
             return "redirect:index";
         } else {
+            log.error("callBack get github error,{}",gitHubUser);
 //            登录失败，重新登录
             return "redirect:index";
         }

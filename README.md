@@ -841,9 +841,91 @@ COMMENT = '用户通知';
 2. 创建枚举
     * 优点，当看到这个枚举的时候，下意识就知道代码中包含的数字是干什么的，也方便代码的重构
     
+# 问题三十四：增加markdown富文本编辑功能
+[markdown富文本编辑功能开源网址](https://pandao.github.io/editor.md/)
+1. 下载源码，将需要的文件相应的放在项目的static目录下
+2. 将文本域获取markdown样式
+```html
+    <link rel="stylesheet" href="/css/editormd.css">
+    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>    
+    <script src="/js/editormd.min.js" type="application/javascript"></script>
 
-
+    <div class="form-group" id="editor-publish">
+                    <textarea name="description" th:text="${description}" id="description" cols="30" rows="10"
+                              class="form-control" style="display:none;"
+                              placeholder="请输入问题描述..."></textarea>
+                </div>
+                <script type="text/javascript">
+                    $(function () {
+                        var editor = editormd("editor-publish", {
+                            width: "100%",
+                            height: 350,
+                            path: "js/lib/",
+                            delay: 0,
+                            placeholder: "请编辑问题描述..."
+                        });
+                    });
+                </script>
+```
+3. markdown to HTML
+    * 将数据库中查询到的markdown格式内容展示在页面上
+```html
+    <link rel="stylesheet" href="/css/editormd.preview.css">
+    <script src="/js/editormd.js" type="application/javascript"></script>
+    <script src="/js/lib/marked.min.js" type="application/javascript"></script>
+    <script src="/js/lib/prettify.min.js" type="application/javascript"></script>
+    <div id="markdown-view-showQuestion">
+                    <!-- Server-side output Markdown text -->
+                    <textarea style="display:none;" th:text="${question.description}"></textarea>
+                </div>
+                <script type="text/javascript">
+                    $(function() {
+                        var testView = editormd.markdownToHTML("markdown-view-showQuestion", {
+                            // markdown : "[TOC]\n### Hello world!\n## Heading 2", // Also, you can dynamic set Markdown text
+                            // htmlDecode : true,  // Enable / disable HTML tag encode.
+                            // htmlDecode : "style,script,iframe",  // Note: If enabled, you should filter some dangerous HTML tags for website security.
+                        });
+                    });
+                </script>
+```
+4. 注意当点击浏览问题时，我们是根据问题的id找到问题的，例如这个路径：http://localhost:8080/question/122
+ * 当需要对问题进行编辑的时候，跳转到编辑页面，我们是根据问题编号，找到问题，并展示在publish.html;http://localhost:8080/publish/122
+ * 如果js代码中path: "js/lib/",意味着在122所在的目录中找js文件，显然是找不到的，path: "/js/lib/，则可以在相对的路径下找到js代码。markdown edit在寻找js
+ * 根据官方文档的upload Image 操作，还需要注意添加插件
     
+    
+# 问题三十五：添加日志
+1. 
+```properties
+    #打出日志的方式
+    logging.file=logs/community.log
+    logging.level.root=INFO
+    logging.level.com.community.mapper=DEBUG
+    #生产标准的最多看30天日志，每个日志200MB
+    logging.file.max-history=30
+    logging.file.max-size=200MB
+```
+2. 追加日志
+类上添加@Slf4j
+log.error("callBack get github error,{}",gitHubUser);
+
+
+3. 打开虚拟机后，在windows界面下输入ssh root@虚拟机ip;eg:ssh root@192.168.255.128,回复yes加输入虚拟机密码，就能访问到虚拟机了
+    * fdisk -l 查看挂在磁盘
+        
+## 部署
+### 依赖
+- 安装git
+- 用maven执行，那么我们就需要JDK
+- 编译java，就要安装maven工具
+- 安装MySQL
+   * springboot项目，不需要tomcat
+
+## 步骤
+- yum update  从数据源更新centos的数据源
+- y 更新安装
+
+
 
 
 

@@ -9,11 +9,15 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/css/community.css">
+    <link rel="stylesheet" href="/css/editormd.preview.css">
     <!--<script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>-->
     <script src="/js/jquery-3.4.1.min.js"></script>
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
     <script src="/js/moment.js" type="application/javascript"></script>
     <script src="/js/community.js" type="application/javascript"></script>
+    <script src="/js/editormd.js" type="application/javascript"></script>
+    <script src="/js/lib/marked.min.js" type="application/javascript"></script>
+    <script src="/js/lib/prettify.min.js" type="application/javascript"></script>
 
 </head>
 
@@ -33,7 +37,19 @@
                 阅读数： <span th:text="${question.viewCount}"></span>
                 <!--问题正文-->
                 <hr>
-                <span th:text="${question.description}"></span>
+                <div id="markdown-view-showQuestion">
+                    <!-- Server-side output Markdown text -->
+                    <textarea style="display:none;" th:text="${question.description}"></textarea>
+                </div>
+                <script type="text/javascript">
+                    $(function() {
+                        var testView = editormd.markdownToHTML("markdown-view-showQuestion", {
+                            // markdown : "[TOC]\n### Hello world!\n## Heading 2", // Also, you can dynamic set Markdown text
+                            // htmlDecode : true,  // Enable / disable HTML tag encode.
+                            // htmlDecode : "style,script,iframe",  // Note: If enabled, you should filter some dangerous HTML tags for website security.
+                        });
+                    });
+                </script>
                 <!--问题标签-->
                 <hr>
                 <span class="label label-info question-tag" th:each="tag : ${question.tag.split(',')}">
@@ -128,12 +144,12 @@
                 <hr class="comment-span">
                 <div class="media-left">
                     <a href="/index">
-                        <img class="media-object img-rounded comment-imgStyle" th:src="${question.user.avatarUrl}">
+                        <img class="media-object img-rounded comment-imgStyle" th:src="${session.userFindByToken.avatarUrl}">
                     </a>
                 </div>
                 <div class="media-body">
                     <a th:href="'/index'">
-                        <h4 class="media-heading comment-name" th:text="${question.user.name}"></h4>
+                        <h4 class="media-heading comment-name" th:text="${session.userFindByToken.name}"></h4>
                     </a>
                 </div>
                 <!--<input type="hidden" id="question_id" value="2323">   假写一个问题编号，模拟评论时找不到值-->
@@ -159,7 +175,7 @@
             <hr>
             <!--站长微信-->
             <h4>站长微信</h4>
-            <img src="/img/wechat.png" style="width: 50%;">
+            <img src="/images/img/wechat.png" style="width: 50%;">
             <hr>
             <!--相关热点问题-->
             <h4>相关问题</h4>

@@ -9,9 +9,19 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/css/community.css">
+    <link rel="stylesheet" href="/css/editormd.css">
     <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
     <script src="/js/community.js" type="application/javascript"></script>
+    <script src="/js/editormd.min.js" type="application/javascript"></script>
+    <!--<script src="/js/lib/codemirror/addon/search/matchesonscrollbar.css"></script>-->
+    <!--<script src="/js/lib/codemirror/addon/dialog/dialog.css"></script>-->
+    <!--<script src="/js/lib/codemirror/codemirror.min.js"></script>-->
+    <!--<script src="/js/lib/codemirror/codemirror.min.css"></script>-->
+    <script src="/js/editormd.js" type="application/javascript"></script>
+    <script src="/js/lib/marked.min.js" type="application/javascript"></script>
+    <script src="/js/lib/prettify.min.js" type="application/javascript"></script>
+    <link rel="stylesheet" href="/css/editormd.preview.css">
 
 </head>
 
@@ -49,12 +59,28 @@
                     </div><!-- /.col-lg-6 -->
                 </div><!-- /.row -->
 
-                <div class="form-group">
-                    <label for="description">问题补充 (必填，请参照右侧提示):</label>
+                <label for="description">问题补充 (必填，请参照右侧提示):</label>
+                <div class="form-group" id="editor-publish">
+                    <!--th:id="(${description} != null)?('markdown-view-showQuestion'):('editor-publish')">-->
                     <textarea name="description" th:text="${description}" id="description" cols="30" rows="10"
-                              class="form-control"
+                              class="form-control" style="display:none;"
                               placeholder="请输入问题描述..."></textarea>
                 </div>
+                <script type="text/javascript">
+                    $(function () {
+                        var editor = editormd("editor-publish", {
+                            width: "100%",
+                            height: 350,
+                            path: "/js/lib/",
+                            delay: 0,
+                            placeholder: "请编辑问题描述...",
+                            imageUpload    : true,
+                            imageFormats   : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                            imageUploadURL : "/upload/image"
+
+                        });
+                    });
+                </script>
                 <div class="form-group">
                     <label for="tag">添加标签:</label>
                     <!--<input type="text" class="form-control" id="tag" name="tag" th:value="${tag}" placeholder="创建或搜索添加新话题，以“，”号隔开"-->
@@ -68,9 +94,10 @@
                         />
                     </div>
                     <!--标签选择折叠位置-->
-                    <div id="select-tag" style  ="display:none">
+                    <div id="select-tag" style="display:none">
                         <ul id="myTab" class="nav nav-tabs" aria-labelledby="dropdownMenu1">
-                            <li th:each="selectCategory,selectCategoryStat: ${tags}" th:class="${selectCategoryStat.first?'active':''}">
+                            <li th:each="selectCategory,selectCategoryStat: ${tags}"
+                                th:class="${selectCategoryStat.first?'active':''}">
                                 <a th:href="${'#'+selectCategory.CategoryName}" data-toggle="tab"
                                    th:text="${selectCategory.CategoryName}">
                                 </a>
@@ -78,10 +105,11 @@
                         </ul>
                         <div class="tab-content">
                             <div role="tabpanel" th:id="${selectCategory.CategoryName}"
-                                 th:each="selectCategory,selectCategoryStat: ${tags}" th:class="${selectCategoryStat.first?'tab-pane active':'tab-pane'}">
+                                 th:each="selectCategory,selectCategoryStat: ${tags}"
+                                 th:class="${selectCategoryStat.first?'tab-pane active':'tab-pane'}">
                                 <span th:each="selectTag:${selectCategory.tags}">
                                     <a class="publish-tag" onclick="selectTags(this)" th:data-tag="${selectTag}"
-                                    th:text="${selectTag}"></a>
+                                       th:text="${selectTag}"></a>
                                 </span>
 
                             </div>
