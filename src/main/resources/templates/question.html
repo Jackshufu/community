@@ -73,12 +73,12 @@
                 <hr>
                 <div class="comment-foreach" th:each="comment : ${comments}">
                     <div class="media-left">
-                        <a href="/index">
+                        <a href="/">
                             <img class="media-object img-rounded" th:src="${comment.user.avatarUrl}">
                         </a>
                     </div>
                     <div class="media-body" th:id="${'comment-body-'+comment.id}">
-                        <a th:href="'/index'">
+                        <a th:href="'/'">
                             <h4 class="media-heading" th:text="${comment.user.name}"></h4>
                         </a>
                         <span th:text="${comment.content}"></span><br>
@@ -143,12 +143,12 @@
                 </h4>
                 <hr class="comment-span">
                 <div class="media-left">
-                    <a href="/index">
+                    <a href="/">
                         <img class="media-object img-rounded comment-imgStyle" th:src="${session.userFindByToken.avatarUrl}">
                     </a>
                 </div>
                 <div class="media-body">
-                    <a th:href="'/index'">
+                    <a th:href="'/'">
                         <h4 class="media-heading comment-name" th:text="${session.userFindByToken.name}"></h4>
                     </a>
                 </div>
@@ -163,12 +163,12 @@
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
             <h4>发起人</h4>
             <div class="media-left">
-                <a href="/index">
+                <a href="/">
                     <img class="media-object img-rounded" th:src="${question.user.avatarUrl}">
                 </a>
             </div>
             <div class="media-body">
-                <a th:href="'/index'">
+                <a th:href="'/'">
                     <h4 class="media-heading" th:text="${question.user.name}"></h4>
                 </a>
             </div>
