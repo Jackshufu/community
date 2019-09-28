@@ -75,11 +75,11 @@ public class CallBackController {
 //            登陆成功，写cookie和session
 //            request.getSession().setAttribute("gitHubUser",gitHubUser);
             reaponse.addCookie(new Cookie("token", token));
-            return "redirect:index";
+            return "redirect:/";
         } else {
             log.error("callBack get github error,{}",gitHubUser);
 //            登录失败，重新登录
-            return "redirect:index";
+            return "redirect:/";
         }
 //        return "index";
     }
@@ -93,6 +93,6 @@ public class CallBackController {
         token.setMaxAge(0);
         response.addCookie(token);
 
-        return "redirect:index";
+        return "redirect:/";
     }
 }
