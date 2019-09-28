@@ -50,8 +50,8 @@
                             th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd hh:mm')}"></span></span>
                 </div>
             </div>
-            <div class="modal-footer no-margin-top">
-                <div class="col-md-6">
+            <div class="modal-footer no-margin-top" th:if="${questions != null}">
+                <div class="col-md-6" >
                     当前第 [[${questions.pageNum}]]页,共 [[${questions.pages}]] 页.一共 [[${questions.total}]] 条记录<br>
                 </div>
                 <ul class="pagination pull-right no-margin">

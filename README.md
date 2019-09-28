@@ -1006,6 +1006,12 @@ rpm -ql apache-maven-3.5.2-1.el7.noarch
  - mysqldump -u root -p community > E:\programmer\a.sql   ；导出数据库文件
  - CREATE DATRABSE [数据库名字]创建一个数据库，然后使用use [数据库名]选择要使用的数据库
  - source [文件路径]  ；导入sql语句
+ - 此时就能执行mvn compile package
+ - cp src/main/resources/application.properties src/main/resources/application-production.properties   复制一份配置文件
+ - vi src/main/resources/application-production.properties   编辑生产配置文件
+ - spring boot profile
+ - java -jar -Dspring.profiles.active=production target/community-0.0.1-SNAPSHOT.jar
+ 
  
 
 
