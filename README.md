@@ -1011,6 +1011,9 @@ rpm -ql apache-maven-3.5.2-1.el7.noarch
  - vi src/main/resources/application-production.properties   编辑生产配置文件
  - spring boot profile
  - java -jar -Dspring.profiles.active=production target/community-0.0.1-SNAPSHOT.jar
+ - 之前在index页面的登录按钮链接中的重定向IP是写死的，考虑能不能更换，thymeleaf获取当前项目的路径
+ - ps -aux | grep java 检查当前进程是否存在
+ 
  
  
 

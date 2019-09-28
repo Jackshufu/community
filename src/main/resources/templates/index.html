@@ -36,7 +36,7 @@
             <hr>
             <div class="media" th:each="question : ${questionsList}">
                 <div class="media-left">
-                    <a href="/index">
+                    <a href="/">
                         <img class="media-object img-rounded" th:src="${question.user.avatarUrl}">
                     </a>
                 </div>
@@ -56,29 +56,29 @@
                 </div>
                 <ul class="pagination pull-right no-margin">
                     <li th:if="${questions.hasPreviousPage}">
-                        <a th:href="'/index?pageNum=1'">首页</a>
+                        <a th:href="'/?pageNum=1'">首页</a>
                     </li>
 
                     <li class="prev" th:if="${questions.hasPreviousPage}">
-                        <a th:href="'/index?pageNum='+${questions.prePage}">
+                        <a th:href="'/?pageNum='+${questions.prePage}">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
                     <!--遍历条数-->
                     <li th:each="nav:${questions.navigatepageNums}">
-                        <a th:href="'/index?pageNum='+${nav}" th:text="${nav}" th:if="${nav != questions.pageNum}"></a>
+                        <a th:href="'/?pageNum='+${nav}" th:text="${nav}" th:if="${nav != questions.pageNum}"></a>
                         <span style="font-weight: bold;background: #6faed9;" th:if="${nav == questions.pageNum}"
                               th:text="${nav}"></span>
                     </li>
 
                     <li class="next" th:if="${questions.hasNextPage}">
-                        <a th:href="'/index?pageNum='+${questions.nextPage}">
+                        <a th:href="'/?pageNum='+${questions.nextPage}">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
 
                     <li th:if="${questions.hasNextPage}">
-                        <a th:href="'/index?pageNum='+${questions.pages}">尾页</a>
+                        <a th:href="'/?pageNum='+${questions.pages}">尾页</a>
                     </li>
                 </ul>
             </div>
