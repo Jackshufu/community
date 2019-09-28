@@ -42,7 +42,7 @@
                     <textarea style="display:none;" th:text="${question.description}"></textarea>
                 </div>
                 <script type="text/javascript">
-                    $(function() {
+                    $(function () {
                         var testView = editormd.markdownToHTML("markdown-view-showQuestion", {
                             // markdown : "[TOC]\n### Hello world!\n## Heading 2", // Also, you can dynamic set Markdown text
                             // htmlDecode : true,  // Enable / disable HTML tag encode.
@@ -144,12 +144,13 @@
                 <hr class="comment-span">
                 <div class="media-left">
                     <a href="/">
-                        <img class="media-object img-rounded comment-imgStyle" th:src="${session.userFindByToken.avatarUrl}">
+                        <img class="media-object img-rounded comment-imgStyle"
+                             th:src="(${session.userFindByToken} == null) ? ('/images/img/nologin.jpg'):(${session.userFindByToken.avatarUrl})">
                     </a>
                 </div>
                 <div class="media-body">
                     <a th:href="'/'">
-                        <h4 class="media-heading comment-name" th:text="${session.userFindByToken.name}"></h4>
+                        <h4 class="media-heading comment-name" th:text="(${session.userFindByToken} == null) ? ('游客访问'):(${session.userFindByToken.name})"></h4>
                     </a>
                 </div>
                 <!--<input type="hidden" id="question_id" value="2323">   假写一个问题编号，模拟评论时找不到值-->
