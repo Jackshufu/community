@@ -924,6 +924,91 @@ log.error("callBack get github error,{}",gitHubUser);
 ## 步骤
 - yum update  从数据源更新centos的数据源
 - y 更新安装
+- yum install git  安装git 点击y  ,之后就安装成功了
+- git status 查看git状态，为安装成功
+- pwd 在root目录下面，创建一个文件夹
+- mkdir App ;cd App;ls;
+- git clone +项目地址;拉去github项目
+- ls 当前目录下有项目community
+- cd community  进入项目
+- mvn compile 执行maven文件，但是发现命令用不了，于是就需要安装maven
+- yum install maven
+### 一、两步安装maven
+
++ 下载包
+
+wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
+
++ 安装maven
+yum -y install apache-maven
+
+### 二、查找maven安装路径
+
++ 查找包路径
+
+rpm -qa|grep apache-maven
+
++ 根据包路径查找安装目录
+
+rpm -ql apache-maven-3.5.2-1.el7.noarch
+
+在搜索结果中就有maven的安装目录。
+ - mvn -v  查看maven版本号
+ - mvn clean compile package 清除之前的并打包
+## 重新安装一下JDK
+ - rpm -qa | grep java 检查自己linux中是否有已经安装的
+ - rpm -e xxx --nodeps ;如果安装了，通过 rpm -e xxx --nodeps 命令进行装卸，xxx表示你通过 rpm -qa | grep java 命令 查到的安装包的名字
+ - cd /  返回根目录
+ - cd usr/local/  通过该命令进入根目录下的usr目录下的local目录，这个目录是放一些本地的共享资源的
+ - mkdir java  创建java文件夹
+ - cd java  进入文件夹
+ - tar -xvf jdk-8u191-linux-x64.tar.gz 把linux的java压缩包放进来，解压
+ - ll  查看解压后得到的文件夹
+ -  rm -rf jdk-8u191-linux-x64.tar.gz 删除压缩包
+ - cd jdk1.8.0_191/ 进入文件夹
+ - pwd 获取 /usr/local/java/jdk1.8.0_191，后面用
+ - 在文件末尾将下面倒数四段配置代码追加在前两行后面
+ 
+```properties
+    JAVA_HOME=/usr/local/java/jdk1.8.0_191
+    CLASSPATH=.:$JAVA_HOME/lib.tools.jar
+    PATH=$JAVA_HOME/bin:$PATH
+    export JAVA_HOME CLASSPATH PATH
+```
+ - source /etc/profile 使更改的配置立即生效
+ - java -version 命令和 javac -version 命令来查看 jdk 是否安装成功
+ 
+## linux安装MySQL
+ - rpm -qa | grep MySQL 检查自己linux中是否有已经安装的
+ - rpm -qa | grep mysql
+ - rpm -e xxx --nodeps ;
+ - 复制粘贴文件　　cp  [选项]  源文件或目录  目标文件或目录
+ - 剪切粘贴文件　　mv [选项]  源文件或目录  目标文件或目录
+ - 删除文件　　　　rm 文件　　　　　　慎用 rm -rf  
+ - wget http://dev.mysql.com/get/mysql57-community-release-el6-7.noarch.rpm  ;下载MySQL
+ - rpm -ivh mysql57-community-release-el6-7.noarch.rpm ;安装下载的mysql仓库
+ - yum repolist enabled ;查看源的启用情况,查看源的启用情况
+ - yum list mysql-community* ;查看下现在mysql的版本
+ - yum -y install mysql-server;安装mysql5.7.27
+ - rpm -qa | grep mysql ;查看安装情况
+ - service mysqld start ;启动
+ - service mysqld start ；设置为开机启动
+ - grep 'temporary password' /var/log/mysqld.log ; mysql安装成功后创建的超级用户'root'@'localhost'
+ 的密码会被存储在/var/log/mysqld.log，可以使用如下命令查看密码。初始密码：UkAYvqs&d5,/
+ - 使用mysql生成的'root'@'localhost'用户和密码登录数据库，并修改 其密码，具体命令
+   * mysql -uroot -p  登录并修改密码
+   * ALTER USER 'root'@'localhost' IDENTIFIED BY 'Sxl1234!';
+ - grant all on *.* to  test@"%" Identified by "test"; 创建用户，允许远程接入
+ - FLUSH PRIVILEGES;
+ - service mysqld restart 开通3306端口，就可以远程接入了,重启mysql服务:
+ - service mysqld stop
+ - netstat -tunlp|grep 3306  ;启动成功后执行netstat -tunlp|grep 3306就可以看到mysqld已经启动了3306端口的监听
+ - mysqldump -u root -p community > E:\programmer\a.sql   ；导出数据库文件
+ - CREATE DATRABSE [数据库名字]创建一个数据库，然后使用use [数据库名]选择要使用的数据库
+ - source [文件路径]  ；导入sql语句
+ 
+
+
 
 
 
